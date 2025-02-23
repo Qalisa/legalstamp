@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Legal Document Generation System Specification</h1>
+
+  <!-- Part 1/5: Overview & Architecture -->
+  <h2>1. Project Overview</h2>
+  <h3>Objective</h3>
+  <p>Automate multilingual legal document generation (CLUF, CGU) using templates, variables, versioning, and an HTTP API.</p>
+  
+  <h3>Key Features</h3>
+  <ul>
+    <li>Variable-driven Markdown templating.</li>
+    <li>Daily versioning with <code>latest</code> symlinks.</li>
+    <li>HTTP server with CORS restrictions.</li>
+    <li>CI/CD enforcement for generated docs.</li>
+    <li>Dockerized generator and server.</li>
+  </ul>
+
+  <h2>2. Architecture</h2>
+  <h3>File Structure</h3>
+  <pre>
+├── templates/
+│   ├── {doc}.{lang}.hbs
+│   └── partials/
+├── variables/
+│   ├── global.yaml
+│   └── {lang}.yaml
+├── generated/
+│   └── {doc}/
+│       └── {lang}/
+│           ├── YYYYMMDD.md
+│           └── latest -> YYYYMMDD.md
+├── cli/
+├── server/
+├── metadata.yaml
+└── docker/
+    ├── generator.Dockerfile
+    └── server.Dockerfile
+  </pre>
+
+  <!-- Part 2/5: Variable Management & Templating -->
+  <h2>3. Variable Management</h2>
+  <h3>Rules</h3>
+  <ul>
+    <li>Global variables (<code>global.yaml</code>) merge with language-specific variables.</li>
+    <li>Fail generation if variables clash or are missing.</li>
+  </ul>
+
+  <h3>Example Files</h3>
+  <pre>
+# variables/global.yaml
+org:
+  name: "MyOrg"
+  founded: 2010
+
+# variables/en.yaml
+address: "123 Main St"
+contact_email: "en@myorg.com"
+  </pre>
+
+  <h2>4. Templating</h2>
+  <h3>Syntax (Handlebars)</h3>
+  <pre>
+# {{org.name}}
+**Address**: {{address}}
+{{> _contact_info}}
+  </pre>
+
+  <!-- Part 3/5: Versioning & HTTP Server -->
+  <h2>5. Versioning & Output</h2>
+  <h3>Metadata (metadata.yaml)</h3>
+  <pre>
+history:
+  - timestamp: 20231001
+    doc: CLUF
+    lang: en
+docs:
+  CLUF:
+    en: 20231001
+langs:
+  en: [CLUF]
+  </pre>
+
+  <h2>6. HTTP Server</h2>
+  <h3>Endpoints</h3>
+  <table border="1">
+    <tr><th>Route</th><th>Behavior</th></tr>
+    <tr><td>/get/{doc}/{lang}/{version}</td><td>Returns document (e.g., CLUF/en/20231001)</td></tr>
+    <tr><td>/get/{doc}/{lang}/latest</td><td>Redirects to latest version</td></tr>
+  </table>
+
+  <!-- Part 4/5: CI/CD, Docker, Testing -->
+  <h2>7. CI/CD & Git Compliance</h2>
+  <h3>Workflow</h3>
+  <pre>
+steps:
+  - run: ./generate --all
+  - run: git diff --exit-code generated/
+  </pre>
+
+  <h2>8. Docker Setup</h2>
+  <h3>Generator Image</h3>
+  <pre>
+CMD ["./generate", "--all"]</pre>
+
+  <!-- Part 5/5: UI, Docs, Deployment -->
+  <h2>10. UI (AstroJS)</h2>
+  <h3>Pages</h3>
+  <ul>
+    <li><code>/docs</code>: Table of documents and languages.</li>
+    <li><code>/history</code>: Generation timeline.</li>
+  </ul>
+
+  <h2>13. Open Questions</h2>
+  <ul>
+    <li>Should <code>./generate</code> support a <code>--force</code> flag?</li>
+    <li>How long to retain old versions?</li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Addendum: Legal Document Generation System</h1>
+
+  <!-- Operational Details -->
+  <h2>1. Error Handling & Logging</h2>
+  <h3>Error Messages</h3>
+  <table border="1">
+    <tr><th>Scenario</th><th>Error Message</th></tr>
+    <tr><td>Missing variable</td><td><code>ERROR: Variable 'address' missing for language 'fr'</code></td></tr>
+    <tr><td>Invalid template</td><td><code>ERROR: Template 'CLUF.xx.hbs' not found</code></td></tr>
+  </table>
+
+  <h3>Logging</h3>
+  <ul>
+    <li>Log all generation attempts (success/failure) to <code>logs/generation.log</code>.</li>
+    <li>HTTP server logs: Track API requests, response codes, and client IPs.</li>
+  </ul>
+
+  <!-- Security -->
+  <h2>2. Security Considerations</h2>
+  <h3>Rate Limiting (Optional)</h3>
+  <ul>
+    <li>Recommendation: Limit API requests to 100/hour per IP.</li>
+    <li>Implement via Express middleware (e.g., <code>express-rate-limit</code>).</li>
+  </ul>
+
+  <h3>File Permissions</h3>
+  <ul>
+    <li><code>variables/</code> directory: Read-only for the generator tool.</li>
+    <li><code>generated/</code> directory: Read-only for the HTTP server.</li>
+  </ul>
+
+  <!-- Performance -->
+  <h2>3. Performance Optimization</h2>
+  <ul>
+    <li><strong>Caching</strong>: Cache static assets (e.g., generated docs) for 24h via HTTP headers.</li>
+    <li><strong>Parallel Generation</strong>: Use worker threads to generate multiple docs/languages concurrently.</li>
+  </ul>
+
+  <!-- Legal Compliance -->
+  <h2>4. GDPR & Data Privacy</h2>
+  <ul>
+    <li>If storing user data (e.g., in logs), ensure anonymization.</li>
+    <li>Document data retention policies in <code>PRIVACY.md</code>.</li>
+  </ul>
+
+  <!-- Backup & Recovery -->
+  <h2>5. Backup Strategy</h2>
+  <ul>
+    <li>Daily backups of <code>variables/</code> and <code>metadata.yaml</code>.</li>
+    <li>Store backups in encrypted storage (e.g., AWS S3).</li>
+  </ul>
+
+  <!-- Internationalization (i18n) -->
+  <h2>6. Language Expansion Notes</h2>
+  <ul>
+    <li>Right-to-left (RTL) support: Add CSS classes (e.g., <code>dir="rtl"</code>) to UI for Arabic/Hebrew.</li>
+    <li>Locale-specific date formats: Use <code>YYYY-MM-DD</code> universally.</li>
+  </ul>
+
+  <!-- Dependency Management -->
+  <h2>7. Dependencies</h2>
+  <ul>
+    <li><strong>Required Tools</strong>:
+      <ul>
+        <li>Node.js ≥18.x</li>
+        <li>Docker ≥24.x</li>
+        <li>Git ≥2.x</li>
+      </ul>
+    </li>
+    <li><strong>Key Libraries</strong>:
+      <ul>
+        <li>ExpressJS</li>
+        <li>Handlebars</li>
+        <li>AstroJS</li>
+      </ul>
+    </li>
+  </ul>
+
+  <!-- Example Workflows -->
+  <h2>8. Example API Requests</h2>
+  <pre>
+# Fetch latest CLUF in English (Markdown)
+curl -H "Accept: text/markdown" http://api.example.com/get/CLUF/en/latest
+
+# Fetch metadata as JSON
+curl -H "Accept: application/json" http://api.example.com/docs</pre>
+
+  <!-- Glossary -->
+  <h2>9. Glossary</h2>
+  <dl>
+    <dt><code>CLUF</code></dt>
+    <dd>Contractual Legal User Framework (example document type).</dd>
+    <dt><code>latest</code></dt>
+    <dd>Symlink to the most recent document version.</dd>
+  </dl>
+
+  <!-- Contribution Guidelines -->
+  <h2>10. Contribution Rules</h2>
+  <ul>
+    <li>Document all new variables in <code>variables/README.md</code>.</li>
+    <li>Test template changes with <code>./generate --test</code> before committing.</li>
+  </ul>
+</body>
+</html>
