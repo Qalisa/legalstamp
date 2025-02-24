@@ -1,5 +1,4 @@
 {
-    "recommendations": [
-        "george-alisson.html-preview-vscode"
-    ]
+  "recommendations": ["astro-build.astro-vscode"],
+  "unwantedRecommendations": []
 }
