@@ -1,0 +1,32 @@
+---
+import { getLangFromUrl, useTranslations } from 'i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+interface Props {
+  filter?: string[]
+  groupByResult: object
+  originPathnameAgnostic?: boolean
+  defaultPath: string
+  dataName: string
+  description: string
+}
+const { filter, originPathnameAgnostic, defaultPath, groupByResult, description, dataName } = Astro.props
+const base = originPathnameAgnostic ? defaultPath : Astro.originPathname;
+---
+<h2>{
+    !originPathnameAgnostic ? 
+      description 
+      : <a href={base}>{description}</a>
+  }</h2>
+<ul>
+{ (filter ?? Object.keys(groupByResult)).map(i => (
+  <li>
+    <a href={base + "/" + i}>{
+      // @ts-ignore
+      t(dataName)[i]
+    }</a>
+  </li>
+)) }
+</ul>

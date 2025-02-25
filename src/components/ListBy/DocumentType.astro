@@ -1,26 +1,18 @@
 ---
-import { docFirst } from 'helpers/legalstamp.groupedBy'
-
-import { getLangFromUrl, useTranslations } from 'i18n/utils';
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-
+import Base from 'components/ListBy/_Base.astro'
 interface Props {
   docTypes?: string[]
   originPathnameAgnostic?: boolean
 }
 const { docTypes, originPathnameAgnostic } = Astro.props
-const base = originPathnameAgnostic ? "/d" : Astro.originPathname;
+
+import { docFirst } from 'helpers/legalstamp.groupedBy'
 ---
-<h2><a href={base}>By Document Type</a></h2>
-<ul>
-{ (docTypes ?? Object.keys(docFirst)).map(i => (
-  <li>
-    <a href={base + "/" + i}>{
-      // @ts-ignore
-      t('documentType')[i]
-    }</a>
-  </li>
-)) }
-</ul>
+<Base  
+  filter={docTypes}
+  groupByResult={docFirst}
+  originPathnameAgnostic={originPathnameAgnostic}
+  defaultPath="/d"
+  dataName="documentType"
+  description="By Document Type"
+/>

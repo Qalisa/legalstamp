@@ -1,26 +1,18 @@
 ---
-import { langFirst } from 'helpers/legalstamp.groupedBy'
-
-import { getLangFromUrl, useTranslations } from 'i18n/utils';
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-
+import Base from 'components/ListBy/_Base.astro'
 interface Props {
   langs?: string[]
   originPathnameAgnostic?: boolean
 }
-const { langs, originPathnameAgnostic } = Astro.props;
-const base = originPathnameAgnostic ? "/lang" : Astro.originPathname;
+const { langs, originPathnameAgnostic } = Astro.props
+
+import { langFirst } from 'helpers/legalstamp.groupedBy'
 ---
-<h2><a href={base}>By Lang</a></h2>
-<ul>
-{ (langs ?? Object.keys(langFirst)).map(i => (
-  <li>
-    <a href={base + "/" + i}>{
-      // @ts-ignore
-      t('lang')[i]
-    }</a>
-  </li>
-)) }
-</ul>
+<Base  
+  filter={langs}
+  groupByResult={langFirst}
+  originPathnameAgnostic={originPathnameAgnostic}
+  defaultPath="/lang"
+  dataName="lang"
+  description="By Lang"
+/>
