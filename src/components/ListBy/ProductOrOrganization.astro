@@ -5,12 +5,19 @@ import { getLangFromUrl, useTranslations } from 'i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+interface Props {
+  productsOrOrgs?: string[]
+  originPathnameAgnostic?: boolean
+}
+const { productsOrOrgs, originPathnameAgnostic } = Astro.props;
+const base = originPathnameAgnostic ? "/p" : Astro.originPathname;
 ---
-<h2><a href="/p">By Product or Organization</a></h2>
+<h2><a href={base}>By Product or Organization</a></h2>
 <ul>
-{ Object.keys(productOrOrgFirst).map(i => (
+{ (productsOrOrgs ?? Object.keys(productOrOrgFirst)).map(i => (
   <li>
-    <a href={"/p/" + i}>{
+    <a href={base + "/" + i}>{
       // @ts-ignore
       t('productOrOrganization')[i]
     }</a>

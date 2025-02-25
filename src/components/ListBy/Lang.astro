@@ -5,12 +5,19 @@ import { getLangFromUrl, useTranslations } from 'i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+interface Props {
+  langs?: string[]
+  originPathnameAgnostic?: boolean
+}
+const { langs, originPathnameAgnostic } = Astro.props;
+const base = originPathnameAgnostic ? "/l" : Astro.originPathname;
 ---
-<h2><a href="/l">By Lang</a></h2>
+<h2><a href={base}>By Lang</a></h2>
 <ul>
-{ Object.keys(langFirst).map(i => (
+{ (langs ?? Object.keys(langFirst)).map(i => (
   <li>
-    <a href={"/l/" + i}>{
+    <a href={base + "/" + i}>{
       // @ts-ignore
       t('lang')[i]
     }</a>

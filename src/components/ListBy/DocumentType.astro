@@ -5,12 +5,19 @@ import { getLangFromUrl, useTranslations } from 'i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+interface Props {
+  docTypes?: string[]
+  originPathnameAgnostic?: boolean
+}
+const { docTypes, originPathnameAgnostic } = Astro.props
+const base = originPathnameAgnostic ? "/d" : Astro.originPathname;
 ---
-<h2><a href="/d">By Document Type</a></h2>
+<h2><a href={base}>By Document Type</a></h2>
 <ul>
-{ Object.keys(docFirst).map(i => (
+{ (docTypes ?? Object.keys(docFirst)).map(i => (
   <li>
-    <a href={"/d/" + i}>{
+    <a href={base + "/" + i}>{
       // @ts-ignore
       t('documentType')[i]
     }</a>

@@ -16,7 +16,10 @@ const { langs } = Astro.props;
       const flag = e == 'en' ? 'gb' : e
       return (<button>
         <span class={"fi fi-" + flag}></span>
-        <span>{t('lang')[e]}</span>
+        <span>{
+          // @ts-ignore
+          t('lang')[e]
+        }</span>
       </button>)
     })}
 </div>
