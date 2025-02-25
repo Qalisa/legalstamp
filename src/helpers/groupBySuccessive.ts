@@ -1,8 +1,8 @@
-type NestedGroup<T> = {
-    [key: string]: NestedGroup<T> | T[];
-};
+type GroupResult<T> = NestedGroup<T> | Array<T>;
 
-type GroupResult<T> = NestedGroup<T> | T[];
+type NestedGroup<T> = {
+    [key: string]: GroupResult<T>
+};
 
 function getNestedValue(obj: any, keyPath: string): any {
 const keys = keyPath.split('.');
@@ -15,6 +15,7 @@ for (const key of keys) {
 }
 return value;
 }
+
 
 export function groupBySuccessive<T>(array: T[], keys: string[]): GroupResult<T> {
 // Si aucune clé n'est fournie, on retourne le tableau initial (T[])
@@ -50,4 +51,17 @@ for (const key in grouped) {
 
 // On retourne le résultat, qui est compatible avec NestedGroup<T>
 return grouped;
+}
+
+export function successiveFilterByValues<T>(groupResult: GroupResult<T>, equalsTo: Array<string>) {
+    let result = groupResult;
+    for (const valueToEq of equalsTo) {
+        // if getting an array, nothing to filter
+        if (Array.isArray(groupResult)) {
+            return result
+        }
+        // @ts-ignore
+        result = result[valueToEq] as GroupResult<T>
+    }
+    return result;
 }

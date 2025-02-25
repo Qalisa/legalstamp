@@ -1,5 +1,6 @@
 ---
-import ProductOrOrganization from '@components/ListBy/ProductOrOrganization.astro';
+import ProductOrOrganization from 'components/ListBy/ProductOrOrganization.astro';
+import { successiveFilterByValues } from 'helpers/groupBySuccessive';
 import { langFirst } from 'helpers/legalstamp.groupedBy'
 import Layout from 'layouts/Layout.astro';
 
@@ -7,9 +8,9 @@ export const getStaticPaths = () =>
  Object.keys(langFirst).map(key => ({params: {lang: key}}))
 
 const { lang } = Astro.params;
-const [_, subItems] = Object.entries(langFirst)
-    .find(([key,]) => key == lang) ?? []
-const keys = Object.keys(subItems)    
+const keys = Object.keys(
+    successiveFilterByValues(langFirst, [lang])
+)    
 ---
 <Layout>
     <ProductOrOrganization productsOrOrgs={keys}>
