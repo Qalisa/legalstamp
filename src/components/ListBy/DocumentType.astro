@@ -1,8 +1,31 @@
 ---
 import astroLogo from '../assets/astro.svg';
 import background from '../assets/background.svg';
+
+import fs from 'fs';
+import path from 'path';
+
+// Specify the directory you want to list
+const directoryPath = path.join(__dirname, 'your-folder-name');
+
+fs
+
+// Read the contents of the directory
+fs.readdir(directoryPath, { withFileTypes: true }, (err, files) => {
+  if (err) {
+    return console.log('Unable to scan directory: ' + err);
+  }
+
+  // Log the directories and files
+  files.forEach(file => {
+    if (file.isDirectory()) {
+      console.log('Directory:', file.name);
+    } else {
+      console.log('File:', file.name);
+    }
+  });
+});
 ---
 
 <div id="container">
-	coucou
 </div>
