@@ -1,0 +1,10 @@
+---
+import { docFirst } from 'helpers/legalstamp.groupedBy'
+
+export const getStaticPaths = () =>
+ Object.keys(docFirst).map(key => ({params: {documentType: key}}))
+
+const { documentType } = Astro.params;
+const i = Object.entries(docFirst).find(([key,]) => key == documentType)
+---
+{JSON.stringify(i)}

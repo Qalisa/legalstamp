@@ -1,31 +1,19 @@
 ---
-import astroLogo from '../assets/astro.svg';
-import background from '../assets/background.svg';
+import { docFirst } from 'helpers/legalstamp.groupedBy'
 
-import fs from 'fs';
-import path from 'path';
+import { getLangFromUrl, useTranslations } from 'i18n/utils';
 
-// Specify the directory you want to list
-const directoryPath = path.join(__dirname, 'your-folder-name');
-
-fs
-
-// Read the contents of the directory
-fs.readdir(directoryPath, { withFileTypes: true }, (err, files) => {
-  if (err) {
-    return console.log('Unable to scan directory: ' + err);
-  }
-
-  // Log the directories and files
-  files.forEach(file => {
-    if (file.isDirectory()) {
-      console.log('Directory:', file.name);
-    } else {
-      console.log('File:', file.name);
-    }
-  });
-});
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
-
-<div id="container">
-</div>
+<h2><a href="/d">By Document Type</a></h2>
+<ul>
+{ Object.keys(docFirst).map(i => (
+  <li>
+    <a href={"/d/" + i}>{
+      // @ts-ignore
+      t('documentType')[i]
+    }</a>
+  </li>
+)) }
+</ul>

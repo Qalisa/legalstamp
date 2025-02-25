@@ -1,0 +1,22 @@
+---
+import 'flag-icons';
+
+import { getLangFromUrl, useTranslations } from 'i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+interface Props {
+  langs: string[];
+}
+const { langs } = Astro.props;
+---
+<div>
+    {langs.map(e => {
+      const flag = e == 'en' ? 'gb' : e
+      return (<button>
+        <span class={"fi fi-" + flag}></span>
+        <span>{t('lang')[e]}</span>
+      </button>)
+    })}
+</div>

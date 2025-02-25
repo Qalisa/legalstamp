@@ -11,7 +11,7 @@
         "pattern": "Local",
         "uriFormat": "http://localhost:4321",
         "webRoot": "${workspaceFolder}",
-        "killOnServerStop": false
+        "killOnServerStop": true
       }
     }
   ]
