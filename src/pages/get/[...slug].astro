@@ -9,7 +9,7 @@ export async function getStaticPaths() {
     return generateStaticPaths(productOrOrgFirst.grouping, { onlyTags: true})
 }
 
-const { documentType, productOrOrganization, lang, tag, format } = Astro.props;
+const { documentType, format, lang, productOrOrganization, tag } = Astro.props;
 
 //
 const entry = await getEntry('legalstamped', [documentType, productOrOrganization, lang, tag].join('/'))

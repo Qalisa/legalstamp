@@ -1,12 +1,13 @@
 ---
 import Base from 'components/ListBy/_Base.astro'
+import { docFirst } from 'helpers/legalstamp.groupedBy'
+
 interface Props {
   docTypes?: string[]
   originPathnameAgnostic?: boolean
 }
 const { docTypes, originPathnameAgnostic } = Astro.props
 
-import { docFirst } from 'helpers/legalstamp.groupedBy'
 ---
 <Base  
   filter={docTypes}

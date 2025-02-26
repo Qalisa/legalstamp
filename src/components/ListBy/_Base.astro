@@ -13,7 +13,7 @@ interface Props {
   i18nPropertyName: string
   description: string
 }
-const { filter, originPathnameAgnostic, defaultPath, groupByResult, description, i18nPropertyName } = Astro.props
+const { defaultPath, description, filter, groupByResult, i18nPropertyName, originPathnameAgnostic } = Astro.props
 const base = originPathnameAgnostic ? defaultPath : Astro.originPathname;
 const elems = (filter ?? (groupByResult ? Object.keys(groupByResult): []))
 ---

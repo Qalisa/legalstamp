@@ -1,11 +1,11 @@
 ---
 import DocumentType from 'components/ListBy/DocumentType.astro';
 import Lang from 'components/ListBy/Lang.astro';
+import { renderingDeadEnd } from 'helpers/error';
 import { successiveFilterByValues } from 'helpers/groupBySuccessive';
 import { defaultDocFormat, productOrOrgFirst } from 'helpers/legalstamp.groupedBy';
 import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
-import { renderingDeadEnd } from 'helpers/error';
 
 const tag = "latest"
 
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
     return generateStaticPaths(productOrOrgFirst.grouping)
 }
 
-const { documentType, productOrOrganization, lang, format } = Astro.props;
+const { documentType, format, lang, productOrOrganization } = Astro.props;
 
 //
 const filtered = successiveFilterByValues(productOrOrgFirst.data, [productOrOrganization, documentType, lang, ["meta.tag", tag], ["meta.format", defaultDocFormat]])

@@ -12,7 +12,7 @@ export async function getStaticPaths() {
     return generateStaticPaths(docFirst.grouping)
 }
 
-const { documentType, productOrOrganization, lang, tag, format } = Astro.props;
+const { documentType, format, lang, productOrOrganization, tag } = Astro.props;
 
 //
 const filtered = successiveFilterByValues(docFirst.data, [documentType, productOrOrganization, lang, ["meta.tag", tag], ["meta.format", defaultDocFormat]])

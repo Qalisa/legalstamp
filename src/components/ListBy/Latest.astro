@@ -1,12 +1,12 @@
 ---
 import Base from 'components/ListBy/_Base.astro'
+import { productOrOrgFirst } from 'helpers/legalstamp.groupedBy'
 interface Props {
   productsOrOrgs?: string[]
   originPathnameAgnostic?: boolean
 }
-const { productsOrOrgs, originPathnameAgnostic } = Astro.props
+const { originPathnameAgnostic, productsOrOrgs } = Astro.props
 
-import { productOrOrgFirst } from 'helpers/legalstamp.groupedBy'
 ---
 <Base  
   filter={productsOrOrgs}

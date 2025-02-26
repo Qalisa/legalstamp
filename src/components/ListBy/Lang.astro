@@ -1,12 +1,13 @@
 ---
 import Base from 'components/ListBy/_Base.astro'
+import { langFirst } from 'helpers/legalstamp.groupedBy'
 interface Props {
   langs?: string[]
   originPathnameAgnostic?: boolean
 }
+
 const { langs, originPathnameAgnostic } = Astro.props
 
-import { langFirst } from 'helpers/legalstamp.groupedBy'
 ---
 <Base  
   filter={langs}
