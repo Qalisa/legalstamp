@@ -1,6 +1,6 @@
 
 import { getNestedValue } from 'helpers/groupBySuccessive';
-import { all, availableFormats, type Grouping, type GroupingItem, type Meta, type Nullable } from 'helpers/legalstamp.groupedBy';
+import { all, availableFormatsKeys, type Grouping, type GroupingItem, type Meta, type Nullable } from 'helpers/legalstamp.groupedBy';
 
 //
 function getNestedValueFrom(obj: any, keyPaths: GroupingItem[], containFilter: GroupingItem) : string | null {
@@ -13,7 +13,8 @@ type Expected = { slug: string } & Nullable<Meta>
 // TODO: remove duplcate paths ??
 export function generateStaticPaths(grouping: Grouping, options?: {onlyTags: boolean}) {
     let out: Expected[] = []
-    
+
+    //
     if (options?.onlyTags != true) {
         for (let i = 0; i < grouping.length; i++) {
             const taking = grouping.slice(0, i + 1)
@@ -32,11 +33,16 @@ export function generateStaticPaths(grouping: Grouping, options?: {onlyTags: boo
         }
     }
 
+    // tags
     out = out.concat(
         all.flatMap(e => {
-            return availableFormats.map(({ format }) => {
+            return availableFormatsKeys.map(({ format }) => {
+                //
+                const withMetaSlug = [...grouping, 'meta.tag'].map(i => getNestedValue(e, i)).join('/')
+
+                //
                 return {
-                    slug: [...grouping, 'meta.tag'].map(i => getNestedValue(e, i)).join('/'),
+                    slug: withMetaSlug,
                     documentType: getNestedValue(e, 'meta.documentType'),
                     productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
                     lang: getNestedValue(e, 'meta.lang'),
@@ -47,11 +53,30 @@ export function generateStaticPaths(grouping: Grouping, options?: {onlyTags: boo
         })
     )
 
+    // format
+    out = out.concat(
+        all.flatMap(e => {
+            return availableFormatsKeys.map(({ format }) => {
+                //
+                const withMetaSlug = [...grouping, 'meta.tag'].map(i => getNestedValue(e, i)).join('/')
 
-  return out.map(({ slug, documentType, lang, productOrOrganization, tag }) => {
+                //
+                return {
+                    slug: [withMetaSlug, format].join('/'),
+                    documentType: getNestedValue(e, 'meta.documentType'),
+                    productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
+                    lang: getNestedValue(e, 'meta.lang'),
+                    tag: getNestedValue(e, 'meta.tag'),
+                    format
+                }
+            })
+        })
+    )
+
+  return out.map(({ slug, ...props }) => {
     return {
       params: { slug },
-      props: { documentType, productOrOrganization, lang, tag },
+      props
     };
   });
 }
