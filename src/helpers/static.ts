@@ -36,20 +36,14 @@ export function generateStaticPaths(grouping: Grouping, options?: {onlyTags: boo
     // tags
     out = out.concat(
         all.flatMap(e => {
-            return availableFormatsKeys.map(({ format }) => {
-                //
-                const withMetaSlug = [...grouping, 'meta.tag'].map(i => getNestedValue(e, i)).join('/')
-
-                //
-                return {
-                    slug: withMetaSlug,
-                    documentType: getNestedValue(e, 'meta.documentType'),
-                    productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
-                    lang: getNestedValue(e, 'meta.lang'),
-                    tag: getNestedValue(e, 'meta.tag'),
-                    format
-                }
-            })
+            return {
+                slug: [...grouping, 'meta.tag'].map(i => getNestedValue(e, i)).join('/'),
+                documentType: getNestedValue(e, 'meta.documentType'),
+                productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
+                lang: getNestedValue(e, 'meta.lang'),
+                tag: getNestedValue(e, 'meta.tag'),
+                format: null
+            }
         })
     )
 

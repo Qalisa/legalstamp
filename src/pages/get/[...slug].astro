@@ -37,6 +37,6 @@ switch (defaultedFormat) {
 
 const { Content } = await render(entry);
 ---
-<LeanLayout>
+<LeanLayout isEnhanced={defaultedFormat == 'enhanced'}>
     <Content />
 </LeanLayout>

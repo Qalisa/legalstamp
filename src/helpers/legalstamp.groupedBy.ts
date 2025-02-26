@@ -7,8 +7,11 @@ import { groupBySuccessive } from 'helpers/groupBySuccessive'
 
 //
 export const availableFormatsConfig = {
+  enhanced: {
+    name: 'enhanced',
+  },
   html: {
-    name: 'markdown'
+    name: 'html'
   },
   markdown: {
     name: 'markdown',
@@ -18,11 +21,12 @@ export const availableFormatsConfig = {
 
 type DocFormat = keyof typeof availableFormatsConfig
 
-export const defaultDocFormat: DocFormat = 'html'
+export const defaultDocFormat: DocFormat = 'enhanced'
 
 export const availableFormatsKeys = [
     {format: availableFormatsConfig.html.name}, 
-    {format: availableFormatsConfig.markdown.name}
+    {format: availableFormatsConfig.markdown.name},
+    {format: availableFormatsConfig.enhanced.name}
 ] as const satisfies Array<{format: DocFormat}>
 
 //

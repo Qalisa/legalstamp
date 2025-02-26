@@ -4,7 +4,7 @@ import Lang from 'components/ListBy/Lang.astro';
 import Tags from 'components/ListBy/Tags.astro';
 import { renderingDeadEnd } from 'helpers/error';
 import { successiveFilterByValues } from 'helpers/groupBySuccessive';
-import { productOrOrgFirst } from 'helpers/legalstamp.groupedBy';
+import { defaultDocFormat, productOrOrgFirst } from 'helpers/legalstamp.groupedBy';
 import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
 
@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 const { documentType, productOrOrganization, lang, tag, format } = Astro.props;
 
 //
-const filtered = successiveFilterByValues(productOrOrgFirst.data, [productOrOrganization, documentType, lang, ["meta.tag", tag], ["meta.format", 'html']])
+const filtered = successiveFilterByValues(productOrOrgFirst.data, [productOrOrganization, documentType, lang, ["meta.tag", tag], ["meta.format", defaultDocFormat]])
 const isFilteredArray = Array.isArray(filtered)
 const toDisplay = 
     ((tag && isFilteredArray) && filtered[0]) || 

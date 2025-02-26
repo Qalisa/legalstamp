@@ -1,5 +1,9 @@
 ---
 import { availableFormatsConfig } from 'helpers/legalstamp.groupedBy';
+interface Props {
+	isEnhanced?: boolean
+}
+const { isEnhanced } = Astro.props
 ---
 <!doctype html>
 <html lang={Astro.currentLocale}>
@@ -14,9 +18,13 @@ import { availableFormatsConfig } from 'helpers/legalstamp.groupedBy';
 			<slot />
 		</div>
 	</body>
+	{ isEnhanced && 	
 	<footer>
-		<a href={[Astro.url, availableFormatsConfig.markdown.name].join('/')}>Also available as Markdown</a>
+		<a href={[Astro.url, availableFormatsConfig.markdown.name].join('/')}>Markdown #️⃣</a>
+		<br/>
+		<a href={[Astro.url, availableFormatsConfig.html.name].join('/')}>HTML 🌏</a>
 	</footer>
+	}
 </html>
 
 <style>
@@ -28,5 +36,11 @@ import { availableFormatsConfig } from 'helpers/legalstamp.groupedBy';
 
 	#content {
 		padding: 1rem 3rem 5rem 2rem;;
+	}
+
+	footer {
+		padding: 2rem;
+		text-align: right;
+    	font-size: .75rem;
 	}
 </style>
