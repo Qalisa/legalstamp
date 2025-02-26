@@ -10,22 +10,24 @@ function getNestedValueFrom(obj: any, keyPaths: GroupingItem[], containFilter: G
 type Expected = { slug: string } & Nullable<Meta>
 
 // TODO: remove duplcate paths ??
-export function generateStaticPaths(grouping: Grouping) {
+export function generateStaticPaths(grouping: Grouping, options?: {onlyTags: boolean}) {
     let out: Expected[] = []
     
-    for (let i = 0; i < grouping.length; i++) {
-        const taking = grouping.slice(0, i + 1)
-        out = out.concat(
-            all.map(e => {
-                return {
-                    slug: taking.map(i => getNestedValue(e, i)).join('/'),
-                    documentType: getNestedValueFrom(e, taking, 'meta.documentType'),
-                    productOrOrganization: getNestedValueFrom(e, taking, 'meta.productOrOrganization'),
-                    lang: getNestedValueFrom(e, taking, 'meta.lang'),
-                    tag: null
-                } 
-            })
-        )
+    if (options?.onlyTags != true) {
+        for (let i = 0; i < grouping.length; i++) {
+            const taking = grouping.slice(0, i + 1)
+            out = out.concat(
+                all.map(e => {
+                    return {
+                        slug: taking.map(i => getNestedValue(e, i)).join('/'),
+                        documentType: getNestedValueFrom(e, taking, 'meta.documentType'),
+                        productOrOrganization: getNestedValueFrom(e, taking, 'meta.productOrOrganization'),
+                        lang: getNestedValueFrom(e, taking, 'meta.lang'),
+                        tag: null
+                    } 
+                })
+            )
+        }
     }
 
     out = out.concat(

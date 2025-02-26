@@ -29,7 +29,7 @@ export const all = allDocs.map(e => {
 const groupings = {
     docFirst: ['meta.documentType', 'meta.productOrOrganization', 'meta.lang'],
     langFirst: ['meta.lang', 'meta.productOrOrganization', 'meta.documentType'],
-    productOrOrgFirst: ['meta.productOrOrganization', 'meta.documentType', 'meta.lang']
+    productOrOrgFirst: ['meta.productOrOrganization', 'meta.documentType', 'meta.lang'],
 } as const
 
 export type Grouping = (typeof groupings)[keyof typeof groupings];

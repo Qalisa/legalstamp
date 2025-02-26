@@ -1,0 +1,18 @@
+---
+import Base from 'components/ListBy/_Base.astro'
+interface Props {
+  productsOrOrgs?: string[]
+  originPathnameAgnostic?: boolean
+}
+const { productsOrOrgs, originPathnameAgnostic } = Astro.props
+
+import { productOrOrgFirst } from 'helpers/legalstamp.groupedBy'
+---
+<Base  
+  filter={productsOrOrgs}
+  groupByResult={productOrOrgFirst.data}
+  originPathnameAgnostic={originPathnameAgnostic}
+  defaultPath="/latest"
+  i18nPropertyName="productOrOrganization"
+  description="Latest Documents in"
+/>

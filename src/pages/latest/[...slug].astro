@@ -1,36 +1,42 @@
 ---
 import DocumentType from 'components/ListBy/DocumentType.astro';
-import ProductOrOrganization from 'components/ListBy/ProductOrOrganization.astro';
-import Tags from 'components/ListBy/Tags.astro';
+import Lang from 'components/ListBy/Lang.astro';
 import { successiveFilterByValues } from 'helpers/groupBySuccessive';
-import { langFirst } from 'helpers/legalstamp.groupedBy';
+import { productOrOrgFirst } from 'helpers/legalstamp.groupedBy';
 import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
 import { renderingDeadEnd } from 'helpers/error';
 
+const tag = "latest"
+
 export async function getStaticPaths() {
-    return generateStaticPaths(langFirst.grouping)
+    return generateStaticPaths(productOrOrgFirst.grouping)
 }
 
-const { documentType, productOrOrganization, lang, tag } = Astro.props;
+const { documentType, productOrOrganization, lang } = Astro.props;
 
 //
-const filtered = successiveFilterByValues(langFirst.data, [lang, productOrOrganization, documentType, ["meta.tag", tag]])
+const filtered = successiveFilterByValues(productOrOrgFirst.data, [productOrOrganization, documentType, lang, ["meta.tag", tag]])
 const isFilteredArray = Array.isArray(filtered)
 const toDisplay = 
-    ((tag && isFilteredArray) && filtered[0]) || 
+    (isFilteredArray && filtered[0]) || 
     (lang && isFilteredArray) && filtered.map(e => e.meta.tag) ||
-    (!isFilteredArray && Object.keys(filtered)) ||
+    Object.keys(filtered) ||
     []
 
+//
 //
 if (!Array.isArray(toDisplay)) {
     return Astro.rewrite(["get", productOrOrganization, documentType, lang, tag].join('/'))
 }
+
+function noLatestDocument() {
+    throw new Error('No document marked as "latest" found')
+}
 ---
 {
-    (productOrOrganization == null && <Layout><ProductOrOrganization productsOrOrgs={toDisplay} /></Layout>) ||
     (documentType == null && <Layout><DocumentType docTypes={toDisplay} /></Layout>) ||
-    (tag == null && <Layout><Tags tags={toDisplay} /></Layout>)  ||
+    (lang == null && <Layout><Lang langs={toDisplay} /></Layout>) ||
+    (toDisplay.length == 0 && noLatestDocument()) ||
     renderingDeadEnd()
 }

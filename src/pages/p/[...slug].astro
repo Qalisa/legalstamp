@@ -2,12 +2,11 @@
 import DocumentType from 'components/ListBy/DocumentType.astro';
 import Lang from 'components/ListBy/Lang.astro';
 import Tags from 'components/ListBy/Tags.astro';
-import ShowDoc from 'components/ShowDoc.astro';
+import { renderingDeadEnd } from 'helpers/error';
 import { successiveFilterByValues } from 'helpers/groupBySuccessive';
 import { productOrOrgFirst } from 'helpers/legalstamp.groupedBy';
 import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
-import LeanLayout from 'layouts/LeanLayout.astro';
 
 export async function getStaticPaths() {
     return generateStaticPaths(productOrOrgFirst.grouping)
@@ -25,11 +24,13 @@ const toDisplay =
     []
 
 //
-const docToDisplay = !Array.isArray(toDisplay)
+if (!Array.isArray(toDisplay)) {
+    return Astro.rewrite(["get", productOrOrganization, documentType, lang, tag].join('/'))
+}
 ---
-{ docToDisplay && <LeanLayout><ShowDoc doc={toDisplay} /></LeanLayout>}
-{ !docToDisplay && (
+{
     (documentType == null && <Layout><DocumentType docTypes={toDisplay} /></Layout>) ||
     (lang == null && <Layout><Lang langs={toDisplay} /></Layout>) ||
-    (tag == null && <Layout><Tags tags={toDisplay} /></Layout>)
-)}
+    (tag == null && <Layout><Tags tags={toDisplay} /></Layout>) ||
+    renderingDeadEnd()
+}
