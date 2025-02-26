@@ -2,11 +2,32 @@ import { getCollection } from 'astro:content';
 import { groupBySuccessive } from 'helpers/groupBySuccessive'
 
 //
-type DocFormat = 'html' | 'markdown'
-export const availableFormats = [
-    {format: 'html'}, 
-    {format: 'markdown'}
-] as const satisfies Array<{format: DocFormat}> 
+//
+//
+
+//
+export const availableFormatsConfig = {
+  html: {
+    name: 'markdown'
+  },
+  markdown: {
+    name: 'markdown',
+    contentType: "text/markdown; charset=UTF-8"
+  }
+} as const
+
+type DocFormat = keyof typeof availableFormatsConfig
+
+export const defaultDocFormat: DocFormat = 'html'
+
+export const availableFormatsKeys = [
+    {format: availableFormatsConfig.html.name}, 
+    {format: availableFormatsConfig.markdown.name}
+] as const satisfies Array<{format: DocFormat}>
+
+//
+//
+//
 
 export type Meta = {
   documentType: string
@@ -23,7 +44,7 @@ const allDocs = await getCollection('legalstamped');
 /** */
 export const all = allDocs.flatMap(e => {
   const [documentType, productOrOrganization, lang, tag] = e.id.split("/")
-  return availableFormats.map(({ format }) => {
+  return availableFormatsKeys.map(({ format }) => {
     return {
       ...e,
       meta: {

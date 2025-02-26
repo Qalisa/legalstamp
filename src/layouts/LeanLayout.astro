@@ -1,3 +1,6 @@
+---
+import { availableFormatsConfig } from 'helpers/legalstamp.groupedBy';
+---
 <!doctype html>
 <html lang={Astro.currentLocale}>
 	<head>
@@ -11,6 +14,9 @@
 			<slot />
 		</div>
 	</body>
+	<footer>
+		<a href={[Astro.url, availableFormatsConfig.markdown.name].join('/')}>Also available as Markdown</a>
+	</footer>
 </html>
 
 <style>

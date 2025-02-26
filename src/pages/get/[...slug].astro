@@ -1,7 +1,7 @@
 ---
 import { render } from "astro:content";
 import { getEntry } from "astro:content";
-import { productOrOrgFirst } from "helpers/legalstamp.groupedBy";
+import { availableFormatsConfig, defaultDocFormat, productOrOrgFirst } from "helpers/legalstamp.groupedBy";
 import { generateStaticPaths } from "helpers/static";
 import LeanLayout from "layouts/LeanLayout.astro";
 
@@ -9,13 +9,30 @@ export async function getStaticPaths() {
     return generateStaticPaths(productOrOrgFirst.grouping, { onlyTags: true})
 }
 
-const { documentType, productOrOrganization, lang, tag } = Astro.props;
-const entry = await getEntry('legalstamped', [documentType, productOrOrganization, lang, tag].join('/'))
+const { documentType, productOrOrganization, lang, tag, format } = Astro.props;
 
+//
+const entry = await getEntry('legalstamped', [documentType, productOrOrganization, lang, tag].join('/'))
 if (!entry) {
   throw new Error('Could not find document');
 } else if (entry.rendered?.html == '') {
     throw new Error('Document exist, but is empty');
+}
+
+//
+const defaultedFormat = format ?? defaultDocFormat
+switch (defaultedFormat) {
+    //
+    case "markdown": {
+        return new Response(entry.body, {
+            headers: {
+                "Content-Type": availableFormatsConfig[defaultedFormat].contentType
+            }
+        })
+    }
+
+    // classic rendering
+    default: {}
 }
 
 const { Content } = await render(entry);

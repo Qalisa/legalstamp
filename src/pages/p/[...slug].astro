@@ -12,7 +12,7 @@ export async function getStaticPaths() {
     return generateStaticPaths(productOrOrgFirst.grouping)
 }
 
-const { documentType, productOrOrganization, lang, tag } = Astro.props;
+const { documentType, productOrOrganization, lang, tag, format } = Astro.props;
 
 //
 const filtered = successiveFilterByValues(productOrOrgFirst.data, [productOrOrganization, documentType, lang, ["meta.tag", tag], ["meta.format", 'html']])
@@ -25,7 +25,7 @@ const toDisplay =
 
 //
 if (!Array.isArray(toDisplay)) {
-    return Astro.rewrite(["get", productOrOrganization, documentType, lang, tag].join('/'))
+    return Astro.rewrite(["get", productOrOrganization, documentType, lang, tag, format].filter(Boolean).join('/'))
 }
 ---
 {
