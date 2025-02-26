@@ -25,7 +25,7 @@ const elems = (filter ?? (groupByResult ? Object.keys(groupByResult): []))
 <ul>
 { elems.map(i => (
   <li>
-    <a href={base + "/" + i}>{
+    <a href={[base, i].join("/")}>{
       // @ts-ignore
       t(i18nPropertyName)[i] ?? i
     }</a>

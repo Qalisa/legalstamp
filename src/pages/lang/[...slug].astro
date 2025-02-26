@@ -3,7 +3,7 @@ import DocumentType from 'components/ListBy/DocumentType.astro';
 import ProductOrOrganization from 'components/ListBy/ProductOrOrganization.astro';
 import Tags from 'components/ListBy/Tags.astro';
 import { successiveFilterByValues } from 'helpers/groupBySuccessive';
-import { langFirst } from 'helpers/legalstamp.groupedBy';
+import { defaultDocFormat, langFirst } from 'helpers/legalstamp.groupedBy';
 import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
 import { renderingDeadEnd } from 'helpers/error';
@@ -12,10 +12,10 @@ export async function getStaticPaths() {
     return generateStaticPaths(langFirst.grouping)
 }
 
-const { documentType, productOrOrganization, lang, tag } = Astro.props;
+const { documentType, productOrOrganization, lang, tag, format } = Astro.props;
 
 //
-const filtered = successiveFilterByValues(langFirst.data, [lang, productOrOrganization, documentType, ["meta.tag", tag], ["meta.format", 'html']])
+const filtered = successiveFilterByValues(langFirst.data, [lang, productOrOrganization, documentType, ["meta.tag", tag], ["meta.format", defaultDocFormat]])
 const isFilteredArray = Array.isArray(filtered)
 const toDisplay = 
     ((tag && isFilteredArray) && filtered[0]) || 
@@ -25,7 +25,7 @@ const toDisplay =
 
 //
 if (!Array.isArray(toDisplay)) {
-    return Astro.rewrite(["get", productOrOrganization, documentType, lang, tag].join('/'))
+    return Astro.rewrite(["get", productOrOrganization, documentType, lang, tag, format].filter(Boolean).join('/'))
 }
 ---
 {
