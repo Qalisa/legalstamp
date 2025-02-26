@@ -1,4 +1,6 @@
-type GroupResult<T> = NestedGroup<T> | Array<T>;
+import type { Grouping } from "./legalstamp.groupedBy";
+
+export type GroupResult<T> = NestedGroup<T> | Array<T>;
 
 type NestedGroup<T> = {
     [key: string]: GroupResult<T>
@@ -17,7 +19,21 @@ export function getNestedValue(obj: any, keyPath: string): any {
 }
 
 
-export function groupBySuccessive<T>(array: T[], keys: readonly string[]): GroupResult<T> {
+type AllGroupResult<T> = {
+    /** */
+    data: GroupResult<T>,
+    /** Grouping used for this output */
+    grouping: Grouping
+}
+
+export function groupBySuccessive<T>(array: T[], grouping: Grouping): AllGroupResult<T> {
+    return {
+        data: _groupBySuccessive(array, grouping),
+        grouping
+    }
+}
+
+function _groupBySuccessive<T>(array: T[], keys: Grouping | string[]): GroupResult<T> {
 // Si aucune clé n'est fournie, on retourne le tableau initial (T[])
 if (keys.length === 0) {
     return array;
@@ -46,7 +62,7 @@ const grouped = array.reduce((acc, item) => {
 for (const key in grouped) {
     // grouped[key] est typé comme GroupResult<T>, mais initialement c'est un T[]
     // On appelle récursivement groupBySuccessive, qui retourne un GroupResult<T>
-    grouped[key] = groupBySuccessive((grouped[key] as T[]), restKeys);
+    grouped[key] = _groupBySuccessive((grouped[key] as T[]), restKeys);
 }
 
 // On retourne le résultat, qui est compatible avec NestedGroup<T>

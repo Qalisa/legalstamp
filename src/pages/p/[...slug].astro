@@ -1,22 +1,22 @@
 ---
+import DocumentType from 'components/ListBy/DocumentType.astro';
 import Lang from 'components/ListBy/Lang.astro';
-import ProductOrOrganization from 'components/ListBy/ProductOrOrganization.astro';
 import Tags from 'components/ListBy/Tags.astro';
 import ShowDoc from 'components/ShowDoc.astro';
 import { successiveFilterByValues } from 'helpers/groupBySuccessive';
-import { docFirst } from 'helpers/legalstamp.groupedBy';
+import { productOrOrgFirst } from 'helpers/legalstamp.groupedBy';
 import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
 import LeanLayout from 'layouts/LeanLayout.astro';
 
 export async function getStaticPaths() {
-    return generateStaticPaths(docFirst.grouping)
+    return generateStaticPaths(productOrOrgFirst.grouping)
 }
 
 const { documentType, productOrOrganization, lang, tag } = Astro.props;
 
 //
-const filtered = successiveFilterByValues(docFirst.data, [documentType, productOrOrganization, lang, ["meta.tag", tag]])
+const filtered = successiveFilterByValues(productOrOrgFirst.data, [productOrOrganization, documentType, lang, ["meta.tag", tag]])
 const isFilteredArray = Array.isArray(filtered)
 const toDisplay = 
     ((tag && isFilteredArray) && filtered[0]) || 
@@ -29,7 +29,7 @@ const docToDisplay = !Array.isArray(toDisplay)
 ---
 { docToDisplay && <LeanLayout><ShowDoc doc={toDisplay} /></LeanLayout>}
 { !docToDisplay && (
-    (productOrOrganization == null && <Layout><ProductOrOrganization productsOrOrgs={toDisplay} /></Layout>) ||
+    (documentType == null && <Layout><DocumentType docTypes={toDisplay} /></Layout>) ||
     (lang == null && <Layout><Lang langs={toDisplay} /></Layout>) ||
     (tag == null && <Layout><Tags tags={toDisplay} /></Layout>)
 )}

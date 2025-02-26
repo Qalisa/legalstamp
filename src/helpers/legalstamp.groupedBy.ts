@@ -1,4 +1,4 @@
-import { getCollection, } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { groupBySuccessive } from 'helpers/groupBySuccessive'
 
 export type Meta = {
@@ -11,6 +11,8 @@ export type Meta = {
 export type Nullable<T> = { [K in keyof T]: T[K] | null };
 
 const allDocs = await getCollection('legalstamped');
+
+/** */
 export const all = allDocs.map(e => {
   const [documentType, productOrOrganization, lang, tag] = e.id.split("/")
   return {
@@ -24,7 +26,7 @@ export const all = allDocs.map(e => {
   }
 })
 
-export const groupings = {
+const groupings = {
     docFirst: ['meta.documentType', 'meta.productOrOrganization', 'meta.lang'],
     langFirst: ['meta.lang', 'meta.productOrOrganization', 'meta.documentType'],
     productOrOrgFirst: ['meta.productOrOrganization', 'meta.documentType', 'meta.lang']
