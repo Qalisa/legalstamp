@@ -1,4 +1,4 @@
-import type { Grouping } from "./legalstamp.groupedBy";
+import type { FilterGroupingItem, Grouping } from "./legalstamp.groupedBy";
 
 export type GroupResult<T> = NestedGroup<T> | Array<T>;
 
@@ -69,7 +69,7 @@ for (const key in grouped) {
 return grouped;
 }
 
-type EqFilter = Array<string|null|[keyPath: string, value: string | null]>
+type EqFilter = Array<string|null|[keyPath: FilterGroupingItem, value: string | null]>
 
 export function successiveFilterByValues<T>(groupResult: GroupResult<T>, equalsToFilters: EqFilter) {
     let result = groupResult;
@@ -78,20 +78,22 @@ export function successiveFilterByValues<T>(groupResult: GroupResult<T>, equalsT
     for (const filter of equalsToFilters) {
         const [keyPathFilter, valueFilter] = Array.isArray(filter) ? filter : [, filter]
 
-        // if the current filter is null
+        //
         if (valueFilter == null) {
-            return result
+            continue;
         }
 
         //
-        if (Array.isArray(result)) {
-            return keyPathFilter ?
-                result.filter(e => getNestedValue(e, keyPathFilter) === valueFilter) :
-                result
+        if (Array.isArray(result) && keyPathFilter) {
+            result = result.filter(e => getNestedValue(e, keyPathFilter) === valueFilter) 
+        } 
+        
+        if (keyPathFilter == undefined) {
+            // @ts-ignore
+            result = result[valueFilter] as GroupResult<T>
         }
-
-        // @ts-ignore
-        result = result[valueFilter] as GroupResult<T>
     }
+
+    //
     return result;
 }

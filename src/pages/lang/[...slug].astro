@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 const { documentType, productOrOrganization, lang, tag } = Astro.props;
 
 //
-const filtered = successiveFilterByValues(langFirst.data, [lang, productOrOrganization, documentType, ["meta.tag", tag]])
+const filtered = successiveFilterByValues(langFirst.data, [lang, productOrOrganization, documentType, ["meta.tag", tag], ["meta.format", 'html']])
 const isFilteredArray = Array.isArray(filtered)
 const toDisplay = 
     ((tag && isFilteredArray) && filtered[0]) || 

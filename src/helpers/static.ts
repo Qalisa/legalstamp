@@ -1,7 +1,8 @@
 
 import { getNestedValue } from 'helpers/groupBySuccessive';
-import { all, type Grouping, type GroupingItem, type Meta, type Nullable } from 'helpers/legalstamp.groupedBy';
+import { all, availableFormats, type Grouping, type GroupingItem, type Meta, type Nullable } from 'helpers/legalstamp.groupedBy';
 
+//
 function getNestedValueFrom(obj: any, keyPaths: GroupingItem[], containFilter: GroupingItem) : string | null {
     const foundKeyPath = keyPaths.find(e => e == containFilter)
     return foundKeyPath ? getNestedValue(obj, foundKeyPath) : null
@@ -23,7 +24,8 @@ export function generateStaticPaths(grouping: Grouping, options?: {onlyTags: boo
                         documentType: getNestedValueFrom(e, taking, 'meta.documentType'),
                         productOrOrganization: getNestedValueFrom(e, taking, 'meta.productOrOrganization'),
                         lang: getNestedValueFrom(e, taking, 'meta.lang'),
-                        tag: null
+                        tag: null,
+                        format: null
                     } 
                 })
             )
@@ -31,14 +33,17 @@ export function generateStaticPaths(grouping: Grouping, options?: {onlyTags: boo
     }
 
     out = out.concat(
-        all.map(e => {
-            return {
-                slug: [...grouping, 'meta.tag'].map(i => getNestedValue(e, i)).join('/'),
-                documentType: getNestedValue(e, 'meta.documentType'),
-                productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
-                lang: getNestedValue(e, 'meta.lang'),
-                tag: getNestedValue(e, 'meta.tag')
-            } 
+        all.flatMap(e => {
+            return availableFormats.map(({ format }) => {
+                return {
+                    slug: [...grouping, 'meta.tag'].map(i => getNestedValue(e, i)).join('/'),
+                    documentType: getNestedValue(e, 'meta.documentType'),
+                    productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
+                    lang: getNestedValue(e, 'meta.lang'),
+                    tag: getNestedValue(e, 'meta.tag'),
+                    format
+                }
+            })
         })
     )
 
