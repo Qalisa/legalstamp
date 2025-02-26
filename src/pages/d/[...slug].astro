@@ -4,62 +4,13 @@ import ProductOrOrganization from 'components/ListBy/ProductOrOrganization.astro
 import Tags from 'components/ListBy/Tags.astro';
 import ShowDoc from 'components/ShowDoc.astro';
 import { successiveFilterByValues } from 'helpers/groupBySuccessive';
-import { all, docFirst, type Meta, type Nullable } from 'helpers/legalstamp.groupedBy';
+import { all, docFirst, groupings, type Meta, type Nullable } from 'helpers/legalstamp.groupedBy';
+import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
 import LeanLayout from 'layouts/LeanLayout.astro';
 
 export async function getStaticPaths() {
-    //
-    const one = all.map(e => {
-        return {
-            slug: e.meta.documentType,
-            documentType: e.meta.documentType,
-            productOrOrganization: null,
-            lang: null,
-            tag: null
-        } satisfies { slug: string } & Nullable<Meta>
-    })
-
-    //
-    const two = all.map(e => {
-        return {
-            slug: [e.meta.documentType, e.meta.productOrOrganization].join('/'),
-            documentType: e.meta.documentType,
-            productOrOrganization: e.meta.productOrOrganization,
-            lang: null,
-            tag: null
-        } satisfies { slug: string } & Nullable<Meta>
-    })
-
-    //
-    const three = all.map(e => {
-        return {
-            slug: [e.meta.documentType, e.meta.productOrOrganization, e.meta.lang,].join('/'),
-            documentType: e.meta.documentType,
-            productOrOrganization: e.meta.productOrOrganization,
-            lang: e.meta.lang,
-            tag: null
-        } satisfies { slug: string } & Nullable<Meta>
-    })
-
-    //
-    const four = all.map(e => {
-        return {
-            slug: [e.meta.documentType, e.meta.productOrOrganization, e.meta.lang, e.meta.tag].join('/'),
-            documentType: e.meta.documentType,
-            productOrOrganization: e.meta.productOrOrganization,
-            lang: e.meta.lang,
-            tag: e.meta.tag
-        } as { slug: string } & Nullable<Meta>
-    })
-
-
-  return four.concat(three, two, one).map(({ slug, documentType, lang, productOrOrganization, tag }) => {
-    return {
-      params: { slug },
-      props: { documentType, productOrOrganization, lang, tag },
-    };
-  });
+    return generateStaticPaths(groupings.docFirst)
 }
 
 const { documentType, productOrOrganization, lang, tag } = Astro.props;

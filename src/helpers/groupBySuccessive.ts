@@ -4,20 +4,20 @@ type NestedGroup<T> = {
     [key: string]: GroupResult<T>
 };
 
-function getNestedValue(obj: any, keyPath: string): any {
-const keys = keyPath.split('.');
-let value = obj;
-for (const key of keys) {
-    if (value == null) {
-    return undefined;
+export function getNestedValue(obj: any, keyPath: string): any {
+    const keys = keyPath.split('.');
+    let value = obj;
+    for (const key of keys) {
+        if (value == null) {
+        return undefined;
+        }
+        value = value[key];
     }
-    value = value[key];
-}
-return value;
+    return value;
 }
 
 
-export function groupBySuccessive<T>(array: T[], keys: string[]): GroupResult<T> {
+export function groupBySuccessive<T>(array: T[], keys: readonly string[]): GroupResult<T> {
 // Si aucune clé n'est fournie, on retourne le tableau initial (T[])
 if (keys.length === 0) {
     return array;
