@@ -1,8 +1,17 @@
 import { getCollection, } from 'astro:content';
 import { groupBySuccessive } from 'helpers/groupBySuccessive'
 
+export type Meta = {
+  documentType: string
+  productOrOrganization: string
+  lang: string
+  tag: string
+}
+
+export type Nullable<T> = { [K in keyof T]: T[K] | null };
+
 const allDocs = await getCollection('legalstamped');
-const rich = allDocs.map(e => {
+export const all = allDocs.map(e => {
   const [documentType, productOrOrganization, lang, tag] = e.id.split("/")
   return {
     ...e,
@@ -11,7 +20,7 @@ const rich = allDocs.map(e => {
       productOrOrganization,
       lang,
       tag
-    }
+    } satisfies Meta
   }
 })
 
@@ -22,6 +31,6 @@ const groupings = {
 }
 
 
-export const docFirst = groupBySuccessive(rich, groupings.docFirst)
-export const langFirst = groupBySuccessive(rich, groupings.langFirst)
-export const productOrOrgFirst = groupBySuccessive(rich, groupings.productOrOrgFirst)
+export const docFirst = groupBySuccessive(all, groupings.docFirst)
+export const langFirst = groupBySuccessive(all, groupings.langFirst)
+export const productOrOrgFirst = groupBySuccessive(all, groupings.productOrOrgFirst)

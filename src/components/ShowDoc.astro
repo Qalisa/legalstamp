@@ -1,0 +1,9 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+interface Props {
+  doc: CollectionEntry<'legalstamped'>;
+}
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+---
+<Content />

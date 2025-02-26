@@ -1,0 +1,13 @@
+---
+import Base from 'components/ListBy/_Base.astro'
+interface Props {
+  tags?: string[]
+}
+const { tags } = Astro.props
+---
+<Base  
+  filter={tags}
+  defaultPath="/p"
+  i18nPropertyName="tag"
+  description="Available Documents"
+/>

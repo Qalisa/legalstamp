@@ -53,15 +53,29 @@ for (const key in grouped) {
 return grouped;
 }
 
-export function successiveFilterByValues<T>(groupResult: GroupResult<T>, equalsTo: Array<string>) {
+type EqFilter = Array<string|null|[keyPath: string, value: string | null]>
+
+export function successiveFilterByValues<T>(groupResult: GroupResult<T>, equalsToFilters: EqFilter) {
     let result = groupResult;
-    for (const valueToEq of equalsTo) {
-        // if getting an array, nothing to filter
-        if (Array.isArray(groupResult)) {
+
+    //
+    for (const filter of equalsToFilters) {
+        const [keyPathFilter, valueFilter] = Array.isArray(filter) ? filter : [, filter]
+
+        // if the current filter is null
+        if (valueFilter == null) {
             return result
         }
+
+        //
+        if (Array.isArray(result)) {
+            return keyPathFilter ?
+                result.filter(e => getNestedValue(e, keyPathFilter) === valueFilter) :
+                result
+        }
+
         // @ts-ignore
-        result = result[valueToEq] as GroupResult<T>
+        result = result[valueFilter] as GroupResult<T>
     }
     return result;
 }

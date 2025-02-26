@@ -18,6 +18,9 @@ export const ui = {
         'productOrOrganization': {
             budivy: "BudIvy (Ivy C2C)",
             'ivy-community': "Ivy (Ivy B2B)"
+        },
+        'tag': {
+            'latest': "Latest"
         }
     },
     fr: {
@@ -32,6 +35,9 @@ export const ui = {
         'productOrOrganization': {
             'budivy': "",
             'ivy-community': ""
+        },
+        'tag': {
+            'latest': "Le + récent"
         }
     },
 } as const;

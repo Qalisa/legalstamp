@@ -6,15 +6,15 @@ const t = useTranslations(lang);
 
 interface Props {
   filter?: string[]
-  groupByResult: object
+  groupByResult?: object
   originPathnameAgnostic?: boolean
   defaultPath: string
-  dataName: string
+  i18nPropertyName: string
   description: string
 }
-const { filter, originPathnameAgnostic, defaultPath, groupByResult, description, dataName } = Astro.props
+const { filter, originPathnameAgnostic, defaultPath, groupByResult, description, i18nPropertyName } = Astro.props
 const base = originPathnameAgnostic ? defaultPath : Astro.originPathname;
-const elems = (filter ?? Object.keys(groupByResult))
+const elems = (filter ?? (groupByResult ? Object.keys(groupByResult): []))
 ---
 <h2>{
     !originPathnameAgnostic ? 
@@ -26,7 +26,7 @@ const elems = (filter ?? Object.keys(groupByResult))
   <li>
     <a href={base + "/" + i}>{
       // @ts-ignore
-      t(dataName)[i]
+      t(i18nPropertyName)[i] ?? i
     }</a>
   </li>
 )) }
