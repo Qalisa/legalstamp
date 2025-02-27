@@ -2,8 +2,41 @@
 // Standardize href="." behavior regarding trailing path
 ---
 <script>
-    const { href } = location
-    if(href.endsWith('/') && new URL(href).pathname != '/') {
-        location.href = href.slice(0, href.length - 1)
+    //
+    function docReady(fn: () => void) {
+        // see if DOM is already available
+        if (document.readyState === "complete" || document.readyState === "interactive") {
+            // call on next available tick
+            setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }   
+
+    //
+    function doFixupOnLinks() {
+        const { href } = location
+        const wantsFixup = document.getElementsByClassName('fixup')
+        for (const e of wantsFixup) {
+            const hrefAttr = e.getAttribute('href')
+            if (hrefAttr) {
+                const latest = new URL(href).pathname.split('/').reverse()[0]
+                e.setAttribute('href', [latest, hrefAttr].join('/'))
+            }
+        }
     }
+
+    function sanitizeUrl() {
+        const { href } = location
+        if(href.endsWith('/') && new URL(href).pathname != '/') {
+            location.href = href.slice(0, href.length - 1)
+        }
+    }
+
+    //
+    docReady(() => {
+        sanitizeUrl()
+        doFixupOnLinks()
+    })
+
 </script>

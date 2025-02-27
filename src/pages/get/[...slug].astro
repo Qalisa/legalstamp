@@ -64,7 +64,7 @@ const { Content } = await render(entry);
             ["Markdown #️⃣", availableFormatsConfig.markdown.name], 
             ["HTML 🌏", availableFormatsConfig.html.name]
         ].map(([linkName, format])=>         
-            (<a class="backLink" href={format}>{linkName}</a>)
+            (<a class="fixup" href={format}>{linkName}</a>)
           )
         }
     </Fragment>
