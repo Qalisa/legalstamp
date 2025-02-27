@@ -1,0 +1,10 @@
+{
+    "version": "2.0.0",
+    "tasks": [{
+        "label": "☀️ Generate icons from favicon.svg",
+        "command": "npx",
+        "type": "shell",
+        "args": ["icon-gen", "-i", "public/favicon.svg", "-o", "public"],
+        "problemMatcher": []
+    }]
+}

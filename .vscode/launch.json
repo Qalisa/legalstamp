@@ -25,8 +25,8 @@
       "cwd": "${workspaceFolder}/dev",
       "serverReadyAction": {
           "action": "debugWithChrome",
-          "uriFormat": "http://localhost:3000",
-          "pattern": "Command line:",
+          "uriFormat": "http://localhost:4321",
+          "pattern": "local:",
           "killOnServerStop": true
       }
   },

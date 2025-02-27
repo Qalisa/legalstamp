@@ -7,10 +7,11 @@ export const prerender = false
 //
 const allowedOrigins = (import.meta.env.CORS_ALLOW_ORIGIN ?? '').split(',').filter(Boolean).map(domain => "https://" + domain);
 
-const { documentType, lang, productOrOrganization, tag } = Astro.props;
+const { documentType, lang, productOrOrganization, tag } = Astro.params;
 
 //
-const entry = await getEntry('legalstamped', [documentType, productOrOrganization, lang, tag].join('/'))
+const slug = [documentType, productOrOrganization, lang, tag].join('/')
+const entry = await getEntry('legalstamped', slug)
 if (!entry) {
   throw new Error('Could not find document');
 } else if (entry.rendered?.html == '') {

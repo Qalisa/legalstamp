@@ -4,7 +4,7 @@ import Lang from 'components/ListBy/Lang.astro';
 import Tags from 'components/ListBy/Tags.astro';
 import { renderingDeadEnd } from 'helpers/error';
 import { successiveFilterByValues } from 'helpers/groupBySuccessive';
-import { defaultDocFormatConfig, productOrOrgFirst } from 'helpers/legalstamp.groupedBy';
+import { defaultDocFormatConfig, formatStubs, productOrOrgFirst } from 'helpers/legalstamp.groupedBy';
 import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
 
@@ -33,7 +33,7 @@ const toDisplay =
 
 //
 if (!Array.isArray(toDisplay)) {
-    return Astro.rewrite(["get", productOrOrganization, documentType, lang, tag, format].filter(Boolean).join('/'))
+    return Astro.rewrite([formatStubs.static, productOrOrganization, documentType, lang, tag, format].filter(Boolean).join('/'))
 }
 ---
 {
