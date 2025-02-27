@@ -32,6 +32,12 @@ jobs:
         APP_VERSION=$(yq e '.appVersion' .helm/Chart.yaml)
         echo "appVersion=${APP_VERSION}" >> $GITHUB_OUTPUT
 
+    - name: Extract and format allowed domains
+      id: helm-allowed-cors
+      run: |
+        CORS_ALLOW_ORIGIN=$(yq -r '.cors.allowOriginFrom | join(",")' values.yaml)
+        echo "allowed_cors=${CORS_ALLOW_ORIGIN}" >> $GITHUB_OUTPUT
+
     #
     - name: Compute full image location
       id: meta-pre
@@ -62,6 +68,7 @@ jobs:
         target: lean
         build-args: |
           K8S_APP__VERSION=${{ steps.helm-app-version.outputs.appVersion }}
+          CORS_ALLOW_ORIGIN=${{ steps.helm-app-version.outputs.allowed_cors }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         #

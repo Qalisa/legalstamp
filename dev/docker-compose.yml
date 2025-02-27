@@ -5,6 +5,7 @@ services:
       context: ..
       args:
         K8S_APP__VERSION: "0.0.0-dev"
+        CORS_ALLOW_ORIGIN: "*"
       dockerfile: Dockerfile
       tags:
         - latest
