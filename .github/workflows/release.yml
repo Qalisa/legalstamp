@@ -35,7 +35,7 @@ jobs:
     - name: Extract and format allowed domains
       id: helm-allowed-cors
       run: |
-        CORS_ALLOW_ORIGIN=$(yq -r '.cors.allowOriginFrom | join(",")' .helm/values.$(basename "${{ github.repository }}").yaml)
+        CORS_ALLOW_ORIGIN=$(yq -r '.cors.allowOriginFrom | join(",")' .helm/values.${{ github.ref_name }}.yaml)
         echo "allowedCors=${CORS_ALLOW_ORIGIN}" >> $GITHUB_OUTPUT
 
     #
