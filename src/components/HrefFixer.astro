@@ -44,7 +44,7 @@
                 case "|": {
                     const latest = new URL(href).pathname.split('/').filter(Boolean).reverse()[0]
                     const where = hrefOnAttr.slice(1)
-                    newHref = endsWithSlash ? latest : [latest, where].join('/')
+                    newHref = endsWithSlash ? where : [latest, where].join('/')
                 }
                 break;
             }
