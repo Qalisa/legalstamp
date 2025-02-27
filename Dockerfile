@@ -5,6 +5,6 @@ COPY . .
 RUN pnpm i
 RUN pnpm build
 
-FROM httpd:2.4 AS runtime
+FROM httpd:2.4 AS lean
 COPY --from=build /app/dist /usr/local/apache2/htdocs/
 EXPOSE 80
