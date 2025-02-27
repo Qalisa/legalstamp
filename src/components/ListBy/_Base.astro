@@ -1,5 +1,6 @@
 ---
 import type { GroupResult } from 'helpers/groupBySuccessive';
+import { sanitizePath } from 'helpers/sanitize';
 import { getLangFromUrl, useTranslations } from 'i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -14,14 +15,16 @@ interface Props {
   description: string
 }
 const { defaultPath, description, filter, groupByResult, i18nPropertyName, originPathnameAgnostic } = Astro.props
-const base = originPathnameAgnostic ? defaultPath : Astro.originPathname;
+const base = originPathnameAgnostic 
+  ? defaultPath 
+  : sanitizePath(Astro.originPathname);
 const elems = (filter ?? (groupByResult ? Object.keys(groupByResult): []))
 ---
-<h2>{
+<h3 class="oap">{
     !originPathnameAgnostic ? 
       description 
       : <a href={base}>{description}</a>
-  }</h2>
+  }</h3>
 <ul>
 { elems.map(i => (
   <li>
@@ -32,3 +35,9 @@ const elems = (filter ?? (groupByResult ? Object.keys(groupByResult): []))
   </li>
 )) }
 </ul>
+
+<style>
+  h3.oap {
+    margin-bottom: 0;
+  }
+</style>

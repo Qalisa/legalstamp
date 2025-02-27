@@ -1,0 +1,21 @@
+html {
+    background-color: #fbfff9;
+}
+
+html.dark {
+    background-color: #1b1b1d;
+    color: #fff;
+}
+
+a, a:visited, a:hover, a:active {
+    color: inherit;
+}
+
+a {
+    color: #275c27 !important;
+}
+
+
+.dark a {
+    color: #79b879 !important;
+}

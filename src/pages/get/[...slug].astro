@@ -6,7 +6,7 @@ import { generateStaticPaths } from "helpers/static";
 import LeanLayout from "layouts/LeanLayout.astro";
 
 export async function getStaticPaths() {
-    return generateStaticPaths(productOrOrgFirst.grouping, { onlyTags: true})
+    return generateStaticPaths(productOrOrgFirst.grouping, { onlyTags: true, squeezeTagParam: false })
 }
 
 const { documentType, format, lang, productOrOrganization, tag } = Astro.props;
@@ -24,9 +24,13 @@ const defaultedFormat = format ?? defaultDocFormat
 switch (defaultedFormat) {
     //
     case "markdown": {
+        const allowedOrigin = import.meta.env.CORS_ALLOW_ORIGIN;
         return new Response(entry.body, {
             headers: {
-                "Content-Type": availableFormatsConfig[defaultedFormat].contentType
+                "Content-Type": availableFormatsConfig[defaultedFormat].contentType,
+                "Access-Control-Allow-Origin": allowedOrigin,
+                "Access-Control-Allow-Methods": "GET, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type"
             }
         })
     }

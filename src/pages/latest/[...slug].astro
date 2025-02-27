@@ -7,16 +7,16 @@ import { defaultDocFormat, productOrOrgFirst } from 'helpers/legalstamp.groupedB
 import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
 
-const tag = "latest"
+const TAG__LATEST = "latest" as const
 
 export async function getStaticPaths() {
-    return generateStaticPaths(productOrOrgFirst.grouping)
+    return generateStaticPaths(productOrOrgFirst.grouping, { onlyTags: false, squeezeTagParam: true })
 }
 
 const { documentType, format, lang, productOrOrganization } = Astro.props;
 
 //
-const filtered = successiveFilterByValues(productOrOrgFirst.data, [productOrOrganization, documentType, lang, ["meta.tag", tag], ["meta.format", defaultDocFormat]])
+const filtered = successiveFilterByValues(productOrOrgFirst.data, [productOrOrganization, documentType, lang, ["meta.tag", TAG__LATEST], ["meta.format", defaultDocFormat]])
 const isFilteredArray = Array.isArray(filtered)
 const toDisplay = 
     (isFilteredArray && filtered[0]) || 
@@ -27,7 +27,7 @@ const toDisplay =
 //
 //
 if (!Array.isArray(toDisplay)) {
-    return Astro.rewrite(["get", productOrOrganization, documentType, lang, tag, format].filter(Boolean).join('/'))
+    return Astro.rewrite(["get", productOrOrganization, documentType, lang, TAG__LATEST, format].filter(Boolean).join('/'))
 }
 
 function noLatestDocument() {

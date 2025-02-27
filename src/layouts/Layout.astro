@@ -1,6 +1,11 @@
 ---
-import LanguagePicker from "components/LanguagePicker.astro";
+import "styles/theme.css"
+import ThemeIcon from 'components/ThemeIcon.astro';
+
 const title = "LegalStamp"
+const titlePlus = "⚖️ " + title
+
+const appVersion = import.meta.env.K8S_APP__VERSION ?? "[unknown]"
 ---
 <!doctype html>
 <html lang={Astro.currentLocale}>
@@ -9,22 +14,56 @@ const title = "LegalStamp"
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+		<title>{titlePlus}</title>
 	</head>
+	<header>
+		<nav>
+			<h1>{titlePlus}</h1>
+			<ThemeIcon />
+		</nav>
+	</header>
 	<body>
-		<h1>{title}</h1>
 		<slot />
 	</body>
+	<div id="spacer"/>
 	<footer>
+		{title} - v{appVersion} - Qalisa
 		{/*<LanguagePicker />*/}
-	  </footer>
+	</footer>
 </html>
 
 <style>
 	html,
 	body {
-		margin: 0 5px;
+		display: flex;
+		flex-direction: column;
+		margin: 0;
 		width: 100%;
 		height: 100%;
+	}
+
+	body {
+		margin-left: .5rem;
+	}
+
+	nav {
+		display: flex;
+		flex-direction: row;
+	}
+
+	nav h1 {
+		flex: 1;
+	}
+
+	#spacer {
+		flex: 1;
+	}
+
+	footer {
+		font-style: italic;
+		font-size: .75rem;
+		display: flex;
+		padding: 1rem;
+		justify-content: end;
 	}
 </style>

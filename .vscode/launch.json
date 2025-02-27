@@ -6,6 +6,9 @@
       "name": "Development server",
       "request": "launch",
       "type": "node-terminal",
+      "env": {
+        "CORS_ALLOW_ORIGIN": "*"
+      },
       "serverReadyAction": {
         "action": "debugWithChrome",
         "pattern": "Local",

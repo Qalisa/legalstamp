@@ -1,9 +1,13 @@
 ---
-import { availableFormatsConfig } from 'helpers/legalstamp.groupedBy';
+import "styles/theme.css"
+import ThemeIcon from 'components/ThemeIcon.astro';
+import { availableFormatsConfig, defaultDocFormat } from 'helpers/legalstamp.groupedBy';
+
 interface Props {
 	isEnhanced?: boolean
 }
 const { isEnhanced } = Astro.props
+const reachingDefaultDocFormat = Astro.url.pathname.split('/').at(-1) == defaultDocFormat
 ---
 <!doctype html>
 <html lang={Astro.currentLocale}>
@@ -13,6 +17,7 @@ const { isEnhanced } = Astro.props
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 	</head>
+	<ThemeIcon float={true} />
 	<body>
 		<div id="content">
 			<slot />
@@ -20,9 +25,16 @@ const { isEnhanced } = Astro.props
 	</body>
 	{ isEnhanced && 	
 	<footer>
-		<a href={[Astro.url, availableFormatsConfig.markdown.name].join('/')}>Markdown #️⃣</a>
+		<a href={
+			reachingDefaultDocFormat 
+				? availableFormatsConfig.markdown.name 
+				: [Astro.url, availableFormatsConfig.markdown.name].join('/')
+			}>Markdown #️⃣</a>
 		<br/>
-		<a href={[Astro.url, availableFormatsConfig.html.name].join('/')}>HTML 🌏</a>
+		<a href={reachingDefaultDocFormat 
+				? availableFormatsConfig.html.name 
+				:[Astro.url, availableFormatsConfig.html.name].join('/')
+			}>HTML 🌏</a>
 	</footer>
 	}
 </html>
