@@ -5,6 +5,9 @@ import { availableFormatsConfig, defaultDocFormat, productOrOrgFirst } from "hel
 import { generateStaticPaths } from "helpers/static";
 import LeanLayout from "layouts/LeanLayout.astro";
 
+//
+const allowedOrigins = import.meta.env.CORS_ALLOW_ORIGIN.split(',').filter(Boolean).map(domain => "https://" + domain);
+
 export async function getStaticPaths() {
     return generateStaticPaths(productOrOrgFirst.grouping, { onlyTags: true, squeezeTagParam: false })
 }
@@ -25,14 +28,18 @@ const defaultedFormat = format ?? defaultDocFormat
 switch (defaultedFormat) {
     //
     case "markdown": {
-        const allowedOrigin = import.meta.env.CORS_ALLOW_ORIGIN;
+        //
+        const requester = Astro.request.headers.get('Origin') ?? ''
+        const isRequesterWhitelisted = allowedOrigins.includes(requester)
+
+        //
         return new Response(entry.body, {
             headers: {
-                ...allowedOrigin != "" ? {
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Methods": "GET, OPTIONS",
-                "Access-Control-Allow-Origin": allowedOrigin,
-                "Content-Type": availableFormatsConfig[defaultedFormat].contentType,
+                ...isRequesterWhitelisted ? {
+                    "Access-Control-Allow-Headers": "Content-Type",
+                    "Access-Control-Allow-Methods": "GET, OPTIONS",
+                    "Access-Control-Allow-Origin": requester,
+                    "Content-Type": availableFormatsConfig[defaultedFormat].contentType,
                 } : {}
             }
         })

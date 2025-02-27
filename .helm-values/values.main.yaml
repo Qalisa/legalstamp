@@ -4,4 +4,6 @@ ingress:
 cors:
   allowOriginFrom:
     - qalisa.fr
+    - www.qalisa.fr
     - ivy.community
+    - www.ivy.community

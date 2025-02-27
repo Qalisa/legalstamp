@@ -1,6 +1,6 @@
 {
   "name": "legalstamp",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "legalstamp is an app to generate and deliver legal documents",
   "type": "module",
   "scripts": {
