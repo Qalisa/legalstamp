@@ -1,6 +1,6 @@
 
 import { getNestedValue } from 'helpers/groupBySuccessive';
-import { all, availableFormatsKeys, type Grouping, type GroupingItem, type Meta, type Nullable } from 'helpers/legalstamp.groupedBy';
+import { all, ssgDocFormats, type Grouping, type GroupingItem, type Meta, type Nullable } from 'helpers/legalstamp.groupedBy';
 
 //
 function getNestedValueFrom(obj: any, keyPaths: GroupingItem[], containFilter: GroupingItem) : string | null {
@@ -52,7 +52,7 @@ export function generateStaticPaths(grouping: Grouping, { onlyTags, squeezeTagPa
 
     // format
     all.flatMap(e => {
-        return availableFormatsKeys.map(({ format }) => {
+        return ssgDocFormats.map(({ format }) => {
             //
             const withMetaSlug = (squeezeTagParam 
                 ? grouping : 
@@ -70,6 +70,10 @@ export function generateStaticPaths(grouping: Grouping, { onlyTags, squeezeTagPa
             }
         })
     }).forEach(e => out.set(e.slug, e))
+
+  //
+  //
+  //
 
   return out.values().map(({ slug, ...props }) => {
     return {

@@ -9,23 +9,28 @@ import { groupBySuccessive } from 'helpers/groupBySuccessive'
 export const availableFormatsConfig = {
   enhanced: {
     name: 'enhanced',
+    stub: 'get/static',
   },
   html: {
-    name: 'html'
+    name: 'html',
+    stub: 'get/static',
   },
   markdown: {
     name: 'markdown',
-    contentType: "text/markdown; charset=UTF-8"
+    /** intrinsec dynamic format, excludes from SSG */
+    stub: 'get/dynamic',
+    contentType: "text/markdown; charset=UTF-8",
   }
 } as const
 
 type DocFormat = keyof typeof availableFormatsConfig
 
-export const defaultDocFormat: DocFormat = 'enhanced'
+export const defaultDocFormatConfig = availableFormatsConfig.enhanced
 
-export const availableFormatsKeys = [
+/** should only includes formats which are not dynamic (eg, needs special headers) */
+export const ssgDocFormats = [
     {format: availableFormatsConfig.html.name}, 
-    {format: availableFormatsConfig.markdown.name},
+    // {format: availableFormatsConfig.markdown.name},
     {format: availableFormatsConfig.enhanced.name}
 ] as const satisfies Array<{format: DocFormat}>
 
@@ -48,7 +53,7 @@ const allDocs = await getCollection('legalstamped');
 /** */
 export const all = allDocs.flatMap(e => {
   const [documentType, productOrOrganization, lang, tag] = e.id.split("/")
-  return availableFormatsKeys.map(({ format }) => {
+  return ssgDocFormats.map(({ format }) => {
     return {
       ...e,
       meta: {
