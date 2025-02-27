@@ -1,0 +1,17 @@
+---
+interface Props {
+    title: string
+    description: string
+}
+
+const image = "/favicon-228.png"
+const { description, title } = Astro.props
+---
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="image" content={image} />

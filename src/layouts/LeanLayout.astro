@@ -1,6 +1,7 @@
 ---
 import "styles/theme.css"
 import HrefFixer from "components/HrefFixer.astro";
+import MetaSocialPreview from "components/MetaSocialPreview.astro";
 import ThemeIcon from 'components/ThemeIcon.astro';
 
 interface Props {
@@ -19,6 +20,7 @@ const { isEnhanced, title } = Astro.props
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<HrefFixer />
+		<MetaSocialPreview title={title} description={title} />
 	</head>
 	<></>
 	{isEnhanced && <slot name="back" />}
