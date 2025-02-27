@@ -30,19 +30,25 @@ switch (defaultedFormat) {
     case "markdown": {
         //
         const requester = Astro.request.headers.get('Origin') ?? ''
+        const isCORSRequest = requester != ''
         const isRequesterWhitelisted = allowedOrigins.includes(requester)
+        const OK = !isCORSRequest || isRequesterWhitelisted
 
         //
-        return new Response(entry.body, {
-            headers: {
-                ...isRequesterWhitelisted ? {
+        return new Response(
+            OK 
+                ? entry.body 
+                : "Requester not whitelisted. Should be either " + allowedOrigins.join(''), 
+            {
+                headers: {
                     "Access-Control-Allow-Headers": "Content-Type",
                     "Access-Control-Allow-Methods": "GET, OPTIONS",
-                    "Access-Control-Allow-Origin": requester,
+                    "Access-Control-Allow-Origin": isRequesterWhitelisted ? requester : 'null',
                     "Content-Type": availableFormatsConfig[defaultedFormat].contentType,
-                } : {}
+                },
+                status: OK ? 200 : 401
             }
-        })
+        )
     }
 
     // classic rendering
