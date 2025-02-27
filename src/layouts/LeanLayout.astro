@@ -5,8 +5,9 @@ import ThemeIcon from 'components/ThemeIcon.astro';
 
 interface Props {
 	isEnhanced?: boolean
+	title: string
 }
-const { isEnhanced } = Astro.props
+const { isEnhanced, title } = Astro.props
 
 ---
 <!doctype html>
@@ -16,6 +17,7 @@ const { isEnhanced } = Astro.props
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
 		<HrefFixer />
 	</head>
 	<></>

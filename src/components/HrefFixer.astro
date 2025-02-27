@@ -18,24 +18,44 @@
         const { href } = location
         const wantsFixup = document.getElementsByClassName('fixup')
         for (const e of wantsFixup) {
-            const hrefAttr = e.getAttribute('href')
-            if (hrefAttr) {
-                const latest = new URL(href).pathname.split('/').reverse()[0]
-                e.setAttribute('href', [latest, hrefAttr].join('/'))
-            }
-        }
-    }
+            //
+            let hrefOnAttr = e.getAttribute('href')
+            if (!hrefOnAttr) continue
 
-    function sanitizeUrl() {
-        const { href } = location
-        if(href.endsWith('/') && new URL(href).pathname != '/') {
-            location.href = href.slice(0, href.length - 1)
+            //
+            const cmd = "./#" as const
+            const valid = hrefOnAttr.startsWith(cmd)
+            if (!valid) continue
+
+            //
+            hrefOnAttr = hrefOnAttr.slice(cmd.length)
+
+            //
+            const endsWithSlash = href.endsWith('/')
+            let newHref = ''
+            switch(hrefOnAttr.slice(0, 1)) {
+                // back 1 path seg
+                case "-": {
+                    newHref = endsWithSlash ? '..' : '.'
+                }
+                break;
+
+                // switch path seg
+                case "|": {
+                    const latest = new URL(href).pathname.split('/').filter(Boolean).reverse()[0]
+                    const where = hrefOnAttr.slice(1)
+                    newHref = endsWithSlash ? latest : [latest, where].join('/')
+                }
+                break;
+            }
+
+            // 
+            e.setAttribute('href', newHref)
         }
     }
 
     //
     docReady(() => {
-        sanitizeUrl()
         doFixupOnLinks()
     })
 
