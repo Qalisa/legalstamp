@@ -1,3 +1,7 @@
 ingress:
   hosts:
     - legal.qalisa.fr
+cors:
+  allowOriginFrom:
+    - qalisa.fr
+    - ivy.community
