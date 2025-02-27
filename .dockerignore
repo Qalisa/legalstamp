@@ -2,7 +2,6 @@ Dockerfile
 node_modules
 dist
 .vscode
-.helm
 .helm-values
 .github
 .astro
