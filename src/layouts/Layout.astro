@@ -1,6 +1,7 @@
 ---
 import "styles/theme.css"
 import ArianeLink from "components/ArianeLink.astro";
+import HrefFixer from "components/HrefFixer.astro";
 import ThemeIcon from 'components/ThemeIcon.astro';
 
 const title = "LegalStamp"
@@ -16,6 +17,7 @@ const appVersion = import.meta.env.K8S_APP__VERSION ?? "[unknown]"
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{titlePlus}</title>
+		<HrefFixer />
 	</head>
 	<header>
 		<nav>

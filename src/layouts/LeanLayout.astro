@@ -1,5 +1,6 @@
 ---
 import "styles/theme.css"
+import HrefFixer from "components/HrefFixer.astro";
 import ThemeIcon from 'components/ThemeIcon.astro';
 
 interface Props {
@@ -15,6 +16,7 @@ const { isEnhanced } = Astro.props
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<HrefFixer />
 	</head>
 	<></>
 	{isEnhanced && <slot name="back" />}

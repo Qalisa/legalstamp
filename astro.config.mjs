@@ -11,9 +11,10 @@ export default defineConfig({
     locales: ["fr", "en"],
   },
   integrations: [mdx(), sitemap()],
-  trailingSlash: "ignore", // trailing slash are in reality not handled since middleware will rewrite it, so that href="." always behave expectedly
+  trailingSlash: "ignore",
   // TODO: fill (https://docs.astro.build/en/guides/integrations-guide/sitemap/)
   vite: {
+    appType: 'mpa',
     plugins: [tailwindcss()]
   },
 });

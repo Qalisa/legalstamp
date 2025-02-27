@@ -1,0 +1,9 @@
+---
+// Standardize href="." behavior regarding trailing path
+---
+<script>
+    const { href } = location
+    if(href.endsWith('/') && new URL(href).pathname != '/') {
+        location.href = href.slice(0, href.length - 1)
+    }
+</script>
