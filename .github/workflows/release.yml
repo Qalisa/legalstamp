@@ -49,6 +49,8 @@ jobs:
         tags: |
           type=ref,event=branch
           type=raw,value=${{ steps.helm-app-version.outputs.appVersion }},enable=${{ github.ref == 'refs/heads/main' }}
+          type=raw,value=${{ github.ref_name }}-${{ steps.helm-app-version.outputs.appVersion }}
+          type=raw,value=${{ steps.helm-app-version.outputs.appVersion }}-${{ github.ref_name }}
     
     #
     - name: Build and push
