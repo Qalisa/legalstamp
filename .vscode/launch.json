@@ -16,6 +16,19 @@
         "webRoot": "${workspaceFolder}",
         "killOnServerStop": true
       }
-    }
+    },
+    {
+      "name": "Debug: Docker Compose",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "docker compose up --build",
+      "cwd": "${workspaceFolder}/dev",
+      "serverReadyAction": {
+          "action": "debugWithChrome",
+          "uriFormat": "http://localhost:3000",
+          "pattern": "Command line:",
+          "killOnServerStop": true
+      }
+  },
   ]
 }
