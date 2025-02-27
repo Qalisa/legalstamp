@@ -1,6 +1,7 @@
 ---
 import Base from 'components/ListBy/_Base.astro'
 import { langFirst } from 'helpers/legalstamp.groupedBy'
+
 interface Props {
   langs?: string[]
   originPathnameAgnostic?: boolean
@@ -15,5 +16,5 @@ const { langs, originPathnameAgnostic } = Astro.props
   originPathnameAgnostic={originPathnameAgnostic}
   defaultPath="/lang"
   i18nPropertyName="lang"
-  description="🈳 By Lang"
+  descriptioni18nPropertyName="lang"
 />

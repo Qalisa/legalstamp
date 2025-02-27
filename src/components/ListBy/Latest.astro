@@ -1,6 +1,7 @@
 ---
 import Base from 'components/ListBy/_Base.astro'
 import { productOrOrgFirst } from 'helpers/legalstamp.groupedBy'
+
 interface Props {
   productsOrOrgs?: string[]
   originPathnameAgnostic?: boolean
@@ -14,5 +15,5 @@ const { originPathnameAgnostic, productsOrOrgs } = Astro.props
   originPathnameAgnostic={originPathnameAgnostic}
   defaultPath="/latest"
   i18nPropertyName="productOrOrganization"
-  description="🆕 Latest Documents in"
+  descriptioni18nPropertyName="latest"
 />

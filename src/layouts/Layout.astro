@@ -1,5 +1,6 @@
 ---
 import "styles/theme.css"
+import ArianeLink from "components/ArianeLink.astro";
 import ThemeIcon from 'components/ThemeIcon.astro';
 
 const title = "LegalStamp"
@@ -23,6 +24,7 @@ const appVersion = import.meta.env.K8S_APP__VERSION ?? "[unknown]"
 		</nav>
 	</header>
 	<body>
+		<ArianeLink />
 		<slot />
 	</body>
 	<div id="spacer"/>

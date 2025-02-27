@@ -21,6 +21,13 @@ export const ui = {
         },
         'tag': {
             'latest': "Latest"
+        },
+        'pathDescr': {
+            "latest": "🆕 Latest Documents in",
+            "p": "💼 By Product or Organization",
+            "d": "📝 By Document Type",
+            "lang": "🈳 By Lang",
+            "tag": "🆔 Available Documents"
         }
     },
     fr: {
@@ -31,10 +38,6 @@ export const ui = {
         'documentType': {
             'privacy-policy': "Politique de Confidentialité",
             'use-agreement': "License d'utilisation",
-        },
-        'productOrOrganization': {
-            'budivy': "",
-            'ivy-community': ""
         },
         'tag': {
             'latest': "Le + récent"

@@ -12,13 +12,16 @@ interface Props {
   originPathnameAgnostic?: boolean
   defaultPath: string
   i18nPropertyName: string
-  description: string
+  descriptioni18nPropertyName: string
 }
-const { defaultPath, description, filter, groupByResult, i18nPropertyName, originPathnameAgnostic } = Astro.props
+const { defaultPath, descriptioni18nPropertyName, filter, groupByResult, i18nPropertyName, originPathnameAgnostic } = Astro.props
+
 const base = originPathnameAgnostic 
   ? defaultPath 
   : sanitizePath(Astro.originPathname);
 const elems = (filter ?? (groupByResult ? Object.keys(groupByResult): []))
+
+const description = t('pathDescr')[descriptioni18nPropertyName] ?? descriptioni18nPropertyName
 ---
 <h3 class="oap">{
     !originPathnameAgnostic ? 

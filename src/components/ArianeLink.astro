@@ -1,0 +1,57 @@
+---
+import { getLangFromUrl, useTranslations } from 'i18n/utils';
+
+///
+///
+///
+
+interface Props {
+    pathname?: string
+}
+let { pathname } = Astro.props
+pathname = pathname ?? Astro.originPathname
+
+///
+///
+///
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+///
+///
+///
+
+const url = pathname.split('/').filter(Boolean)
+
+const urls = [
+    ["@", "/"]
+]
+
+for (let i = 0; i < url.length; i++) {
+    const part = url[i]
+    const trPart = i == 0 ? (t('pathDescr')[part] ?? part) : part;
+    
+    urls.push([
+        trPart, 
+        "/" + url.slice(0, i + 1).join("/")
+    ])
+}
+
+
+
+---
+<div class="ariane">
+    {urls.map(([descr, path]) => 
+        (<span>/</span><a href={path}>{descr}</a>)
+    )
+    }
+</div>
+<style>
+    .ariane {
+        display: flex;
+        flex-direction: row;
+        gap: .25rem;
+        font-size: .8rem;
+    }
+</style>
