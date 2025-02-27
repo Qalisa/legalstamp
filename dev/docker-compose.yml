@@ -3,6 +3,8 @@ services:
     image: legalstamp
     build:
       context: ..
+      args:
+        K8S_APP__VERSION: "0.0.0-dev"
       dockerfile: Dockerfile
       tags:
         - latest
@@ -12,4 +14,3 @@ services:
       # will be filled in k8s cluster
       K8S_APP__IMAGE_VERSION: "local"
       K8S_APP__IMAGE_REVISION: "00000000000000000"
-      K8S_APP__VERSION: "v0.0.0"

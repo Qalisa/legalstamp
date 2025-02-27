@@ -60,6 +60,8 @@ jobs:
         context: .
         push: true
         target: lean
+        build-args: 
+          - K8S_APP__VERSION=${{ steps.helm-app-version.outputs.appVersion }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         #

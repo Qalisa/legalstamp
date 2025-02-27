@@ -11,6 +11,7 @@ export default defineConfig({
     locales: ["fr", "en"],
   },
   integrations: [mdx(), sitemap()],
+  trailingSlash: "never",
   // TODO: fill (https://docs.astro.build/en/guides/integrations-guide/sitemap/)
   vite: {
     plugins: [tailwindcss()]
