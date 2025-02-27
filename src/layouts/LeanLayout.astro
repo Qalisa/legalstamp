@@ -18,8 +18,9 @@ const reachingDefaultDocFormat = Astro.url.pathname.split('/').at(-1) == default
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 	</head>
-	<ThemeIcon float={true} />
+	<></>
 	{isEnhanced && <a class="back" href=".">{"<"} Back</a>}
+	<ThemeIcon float={true} hide={!isEnhanced} />
 	<body>
 		<div id="content">
 			<slot />
