@@ -1,12 +1,9 @@
 ---
 import { render } from "astro:content";
 import { getEntry } from "astro:content";
-import { availableFormatsConfig, defaultDocFormat, productOrOrgFirst } from "helpers/legalstamp.groupedBy";
+import { availableFormatsConfig, defaultDocFormatConfig, productOrOrgFirst } from "helpers/legalstamp.groupedBy";
 import { generateStaticPaths } from "helpers/static";
 import LeanLayout from "layouts/LeanLayout.astro";
-
-//
-const allowedOrigins = import.meta.env.CORS_ALLOW_ORIGIN.split(',').filter(Boolean).map(domain => "https://" + domain);
 
 export async function getStaticPaths() {
     return generateStaticPaths(productOrOrgFirst.grouping, { onlyTags: true, squeezeTagParam: false })
@@ -23,37 +20,7 @@ if (!entry) {
 }
 
 //
-const defaultedFormat = format ?? defaultDocFormat
-
-switch (defaultedFormat) {
-    //
-    case "markdown": {
-        //
-        const requester = Astro.request.headers.get('Origin') ?? ''
-        const isCORSRequest = requester != ''
-        const isRequesterWhitelisted = allowedOrigins.includes(requester)
-        const OK = !isCORSRequest || isRequesterWhitelisted
-
-        //
-        return new Response(
-            OK 
-                ? entry.body 
-                : "Requester not whitelisted. Should be either " + allowedOrigins.join(''), 
-            {
-                headers: {
-                    "Access-Control-Allow-Headers": "Content-Type",
-                    "Access-Control-Allow-Methods": "GET, OPTIONS",
-                    "Access-Control-Allow-Origin": isRequesterWhitelisted ? requester : 'null',
-                    "Content-Type": availableFormatsConfig[defaultedFormat].contentType,
-                },
-                status: OK ? 200 : 401
-            }
-        )
-    }
-
-    // classic rendering
-    default: {}
-}
+const defaultedFormat = format ?? defaultDocFormatConfig.name
 
 const { Content, headings } = await render(entry);
 ---

@@ -5,27 +5,36 @@ import { groupBySuccessive } from 'helpers/groupBySuccessive'
 //
 //
 
+export const TAG__LATEST = "latest" as const
+
+export const formatStubs = {
+  static: 'get/static',
+  dynamic: 'get/dynamic'
+} as const
+
 //
 export const availableFormatsConfig = {
   enhanced: {
     name: 'enhanced',
   },
   html: {
-    name: 'html'
+    name: 'html',
   },
   markdown: {
     name: 'markdown',
-    contentType: "text/markdown; charset=UTF-8"
+    /** would only work on SSR */
+    contentType: "text/markdown; charset=UTF-8",
   }
 } as const
 
+export const defaultDocFormatConfig = availableFormatsConfig.enhanced
+
 type DocFormat = keyof typeof availableFormatsConfig
 
-export const defaultDocFormat: DocFormat = 'enhanced'
-
-export const availableFormatsKeys = [
+//
+export const docFormatsMeta = [
     {format: availableFormatsConfig.html.name}, 
-    {format: availableFormatsConfig.markdown.name},
+    // {format: availableFormatsConfig.markdown.name},
     {format: availableFormatsConfig.enhanced.name}
 ] as const satisfies Array<{format: DocFormat}>
 
@@ -48,7 +57,7 @@ const allDocs = await getCollection('legalstamped');
 /** */
 export const all = allDocs.flatMap(e => {
   const [documentType, productOrOrganization, lang, tag] = e.id.split("/")
-  return availableFormatsKeys.map(({ format }) => {
+  return docFormatsMeta.map(({ format }) => {
     return {
       ...e,
       meta: {

@@ -1,0 +1,12 @@
+---
+import { availableFormatsConfig, formatStubs } from "helpers/legalstamp.groupedBy";
+
+export const prerender = false
+
+const { slug } = Astro.params;
+const [productOrOrganization, documentType, lang, tag] = slug!.split('/')
+
+//
+const goTo = [formatStubs.dynamic, documentType, productOrOrganization, lang, tag, availableFormatsConfig.markdown.name].filter(Boolean).join('/')
+return Astro.rewrite(goTo)
+---
