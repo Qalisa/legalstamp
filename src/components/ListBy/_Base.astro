@@ -13,8 +13,9 @@ interface Props {
   defaultPath: string
   i18nPropertyName: string
   descriptioni18nPropertyName: string
+  formatter?: (input: string) => string | undefined
 }
-const { defaultPath, descriptioni18nPropertyName, filter, groupByResult, i18nPropertyName, originPathnameAgnostic } = Astro.props
+const { defaultPath, descriptioni18nPropertyName, filter, formatter, groupByResult, i18nPropertyName, originPathnameAgnostic } = Astro.props
 
 const base = originPathnameAgnostic 
   ? defaultPath 
@@ -29,11 +30,11 @@ const description = t('pathDescr')[descriptioni18nPropertyName] ?? descriptioni1
       : <a href={base}>{description}</a>
   }</h3>
 <ul>
-{ elems.map(i => (
+{ elems.reverse().map(i => (
   <li>
     <a href={[base, i].join("/")}>{
       // @ts-ignore
-      t(i18nPropertyName)[i] ?? i
+      t(i18nPropertyName)[i] ?? formatter?.(i) ?? i
     }</a>
   </li>
 )) }

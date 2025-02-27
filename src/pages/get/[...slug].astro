@@ -21,6 +21,7 @@ if (!entry) {
 
 //
 const defaultedFormat = format ?? defaultDocFormat
+
 switch (defaultedFormat) {
     //
     case "markdown": {
@@ -42,7 +43,28 @@ switch (defaultedFormat) {
 }
 
 const { Content } = await render(entry);
+
 ---
 <LeanLayout isEnhanced={defaultedFormat == 'enhanced'}>
     <Content />
+    <Fragment slot="links">
+        {[
+            ["Markdown #️⃣", availableFormatsConfig.markdown.name], 
+            ["HTML 🌏", availableFormatsConfig.html.name]
+        ].map(([linkName, format])=>         
+            (<a href={"./" + tag + "/" + format}>{linkName}</a>)
+          )
+        }
+    </Fragment>
+    <Fragment slot="back">
+        <a class="back" href={"./."}>{"<"} Back</a>
+    </Fragment>
 </LeanLayout>
+<style>
+    .back {
+		position:absolute;
+		padding-left: 1rem;
+		padding-top: .25rem;
+		font-size: .75rem;
+	}
+</style>

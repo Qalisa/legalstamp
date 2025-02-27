@@ -1,14 +1,12 @@
 ---
 import "styles/theme.css"
-import ArianeLink from "components/ArianeLink.astro";
 import ThemeIcon from 'components/ThemeIcon.astro';
-import { availableFormatsConfig, defaultDocFormat } from 'helpers/legalstamp.groupedBy';
 
 interface Props {
 	isEnhanced?: boolean
 }
 const { isEnhanced } = Astro.props
-const reachingDefaultDocFormat = Astro.url.pathname.split('/').at(-1) == defaultDocFormat
+
 ---
 <!doctype html>
 <html lang={Astro.currentLocale}>
@@ -19,7 +17,7 @@ const reachingDefaultDocFormat = Astro.url.pathname.split('/').at(-1) == default
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<></>
-	{isEnhanced && <a class="back" href="..">{"<"} Back</a>}
+	{isEnhanced && <slot name="back" />}
 	<ThemeIcon float={true} hide={!isEnhanced} />
 	<body>
 		<div id="content">
@@ -27,18 +25,7 @@ const reachingDefaultDocFormat = Astro.url.pathname.split('/').at(-1) == default
 		</div>
 	</body>
 	{ isEnhanced && 	
-	<footer>
-		<a href={
-			reachingDefaultDocFormat 
-				? availableFormatsConfig.markdown.name 
-				: [Astro.url, availableFormatsConfig.markdown.name].join('/')
-			}>Markdown #️⃣</a>
-		<br/>
-		<a href={reachingDefaultDocFormat 
-				? availableFormatsConfig.html.name 
-				:[Astro.url, availableFormatsConfig.html.name].join('/')
-			}>HTML 🌏</a>
-	</footer>
+	<footer><slot name="links" /></footer>
 	}
 </html>
 
@@ -55,14 +42,9 @@ const reachingDefaultDocFormat = Astro.url.pathname.split('/').at(-1) == default
 
 	footer {
 		padding: 2rem;
-		text-align: right;
     	font-size: .75rem;
-	}
-
-	.back {
-		position:absolute;
-		padding-left: 1rem;
-		padding-top: .25rem;
-		font-size: .75rem;
+		display: flex;
+		flex-direction: column;
+		align-items: end;
 	}
 </style>

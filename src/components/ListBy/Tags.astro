@@ -5,10 +5,26 @@ interface Props {
   tags?: string[]
 }
 const { tags } = Astro.props
+
+function parseDate(dateString: string): Date | null {
+    // Ensure the input string is in the correct format
+    if (dateString.length !== 8 || isNaN(Number.parseInt(dateString))) {
+        return null;
+    }
+
+    // Extract year, month, and day from the string
+    const year = parseInt(dateString.substring(0, 4), 10);
+    const month = parseInt(dateString.substring(4, 6), 10) - 1; // Months are 0-indexed in JavaScript
+    const day = parseInt(dateString.substring(6, 8), 10);
+
+    // Create a new Date object
+    return new Date(year, month, day);
+}
 ---
 <Base  
   filter={tags}
   defaultPath="/p"
   i18nPropertyName="tag"
   descriptioni18nPropertyName="tag"
+  formatter={(rawStr) => parseDate(rawStr)?.toLocaleDateString()}
 />

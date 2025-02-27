@@ -1,2 +1,2 @@
 # Arborescence of folder 
-./{documentType}/{productOrOrganization}/{lang}/{"latest"|DDMMYYYY}.md
+./{documentType}/{productOrOrganization}/{lang}/{"latest"|YYYYMMDD}.md

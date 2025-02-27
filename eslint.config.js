@@ -1,5 +1,6 @@
 import eslintPluginAstro from 'eslint-plugin-astro';
 import sort from "eslint-plugin-sort"
+import unusedImports from "eslint-plugin-unused-imports";
 
 export default [
   // add more generic rule sets here, such as:
@@ -7,10 +8,21 @@ export default [
   ...eslintPluginAstro.configs.recommended,
   sort.configs["flat/recommended"],
   {
-    rules: {
-      
-      // override/add rules settings here, such as:
-      // "astro/no-set-html-directive": "error"
-    }
+      plugins: {
+          "unused-imports": unusedImports,
+      },
+      rules: {
+          "no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
+          "unused-imports/no-unused-imports": "error",
+          "unused-imports/no-unused-vars": [
+              "warn",
+              {
+                  "args": "after-used",
+                  "argsIgnorePattern": "^_",
+                  "vars": "all",
+                  "varsIgnorePattern": "^_",
+              },
+          ]
+      }
   }
 ];
