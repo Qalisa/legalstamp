@@ -8,19 +8,44 @@ export const prerender = false
 //
 //
 
-export const injectBypass = (path: string) => `${path}?bypass`
-const allowedToBypass = (url: URL) => import.meta.env.DEV && url.searchParams.get('bypass') != null
+const HEADER_ORIGIN = 'Origin' as const
+const HEADER_AUTHORIZATION = 'Authorization' as const
+const BYPASS_KEYWORD = 'bypass' as const
+
+//
+//
+//
+
+export const injectBypass = (path: string) => `${path}?${BYPASS_KEYWORD}`
+const shouldHandleBypassAttempts = import.meta.env.DEV
+const allowedToBypass = (url: URL) => 
+    shouldHandleBypassAttempts && url.searchParams.get(BYPASS_KEYWORD) != null
+
+//
+//
+//
+
+const allowAuthorizationOnToken = (() => {
+    const { CORS_AUTH_BEARER_TOKEN } = import.meta.env
+    return CORS_AUTH_BEARER_TOKEN == '' || CORS_AUTH_BEARER_TOKEN == null 
+        ? null
+        : CORS_AUTH_BEARER_TOKEN
+})()
+
+//
+//
+//
+
 
 //
 export const getMarkdownPage = () => {
     //
-    const bypass = import.meta.env.DEV
     const pathTo = availableFormatsConfig.markdown.name
 
     //
     return [
-        `Markdown #️⃣${bypass ? '' : ' (CORS)'}`, 
-        bypass ? injectBypass(pathTo) : pathTo
+        `Markdown ${shouldHandleBypassAttempts ? '' : ' (CORS) '}#️⃣`, 
+        shouldHandleBypassAttempts ? injectBypass(pathTo) : pathTo
     ] as const
 }
 
@@ -31,23 +56,33 @@ export const getMarkdownPage = () => {
 //
 export const GET: APIRoute = async ({ params, request: { headers }, url }) => {
     //
-    const origin = headers.get('Origin') ?? ''
+    const origin = headers.get(HEADER_ORIGIN) ?? ''
     const isCORSRequest = origin != ""
     const bypass = allowedToBypass(url)
 
     //
-    if (!isCORSRequest && !bypass) {
+    const authorized = !allowAuthorizationOnToken ? false : (() => {
+        const rawAuth = headers.get(HEADER_AUTHORIZATION)
+        if (!rawAuth) return false
+        const [method, token] = rawAuth?.split(' ')
+        if (method != "Bearer") return false
+        return allowAuthorizationOnToken == token
+    })()
+
+    //
+    if ((!isCORSRequest && !bypass) || !authorized) {
         return corsRestricted()
     }
 
-    return originAllowed(origin) 
+    //
+    return authorized || originAllowed(origin) 
         ? new Response(await getDocument(params), { headers: corsHeaders()}) 
         : forbidden()
     
 }
 
 export const OPTIONS: APIRoute = async ({ request: { headers } }) => {
-    const origin = headers.get('Origin');
+    const origin = headers.get(HEADER_ORIGIN);
 
     //
     if (originAllowed(origin)) {
@@ -105,7 +140,9 @@ const corsRestricted = () => new Response("Please use CORS to access this", { st
 
 //
 const corsHeaders = (whOrigin?: string) : HeadersInit => ({
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": [
+        ...allowAuthorizationOnToken ? [HEADER_AUTHORIZATION]: []
+    ].join(', '),
     "Access-Control-Allow-Methods": "GET, OPTIONS",
     "Access-Control-Allow-Origin": whOrigin ?? 'null',
     "Content-Type": availableFormatsConfig['markdown'].contentType,

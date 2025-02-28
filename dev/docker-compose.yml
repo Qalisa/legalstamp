@@ -15,3 +15,4 @@ services:
       # will be filled in k8s cluster
       K8S_APP__IMAGE_VERSION: "local"
       K8S_APP__IMAGE_REVISION: "00000000000000000"
+      CORS_AUTH_BEARER_TOKEN: "testtest"

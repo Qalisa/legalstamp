@@ -8,6 +8,7 @@
       "type": "node-terminal",
       "env": {
         "CORS_ALLOW_ORIGIN": "*",
+        "CORS_AUTH_BEARER_TOKEN": "testtest"
       },
       "serverReadyAction": {
         "action": "debugWithChrome",
