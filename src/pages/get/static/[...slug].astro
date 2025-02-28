@@ -4,6 +4,7 @@ import { getEntry } from "astro:content";
 import { availableFormatsConfig, defaultDocFormatConfig, productOrOrgFirst } from "helpers/legalstamp.groupedBy";
 import { generateStaticPaths } from "helpers/static";
 import LeanLayout from "layouts/LeanLayout.astro";
+import { getMarkdownPage } from "../dynamic/[documentType]/[productOrOrganization]/[lang]/[tag]/markdown";
 
 export async function getStaticPaths() {
     return generateStaticPaths(productOrOrgFirst.grouping, { onlyTags: true, squeezeTagParam: false })
@@ -28,7 +29,7 @@ const { Content, headings } = await render(entry);
     <Content />
     <Fragment slot="links">
         {[
-            ["Markdown #️⃣", availableFormatsConfig.markdown.name], 
+            getMarkdownPage(), 
             ["HTML 🌏", availableFormatsConfig.html.name]
         ].map(([linkName, format])=>         
             (<a class="fixup" href={"./#|" + format}>{linkName}</a>)
