@@ -2,18 +2,14 @@ import { getEntry } from "astro:content";
 import { availableFormatsConfig } from "helpers/legalstamp.groupedBy";
 import type { APIRoute } from 'astro';
 
-//
-const allowedOrigins = (import.meta.env.CORS_ALLOW_ORIGIN ?? '')
-    .split(',')
-    .filter(Boolean)
-    .map(domain => "https://" + domain);
+export const prerender = false
 
 //
 //
 //
 
 export const injectBypass = (path: string) => `${path}?bypass`
-const allowedToBypass = (url: URL) => import.meta.env.DEV && url.searchParams.get('bypass')
+const allowedToBypass = (url: URL) => import.meta.env.DEV && url.searchParams.get('bypass') != null
 
 //
 export const getMarkdownPage = () => {
@@ -44,7 +40,7 @@ export const GET: APIRoute = async ({ params, request: { headers }, url }) => {
         return corsRestricted()
     }
 
-    return allowedOrigins.includes(origin) 
+    return originAllowed(origin) 
         ? new Response(await getDocument(params), { headers: corsHeaders()}) 
         : forbidden()
     
@@ -54,9 +50,9 @@ export const OPTIONS: APIRoute = async ({ request: { headers } }) => {
     const origin = headers.get('Origin');
 
     //
-    if (origin && allowedOrigins.includes(origin)) {
+    if (originAllowed(origin)) {
         return new Response(null, {
-            headers: corsHeaders(origin),
+            headers: corsHeaders(origin!),
         });
     }
 
@@ -85,8 +81,26 @@ const getDocument = async (params: Record<string, string | undefined>) => {
     return entry.body
 }
 
+
 //
-const forbidden = () => new Response("Requester not whitelisted. Should be either " + allowedOrigins.join(''), { status: 403 }) 
+const allowedOrigins = (() => {
+    const allowedRaw = (import.meta.env.CORS_ALLOW_ORIGIN ?? '')
+    if (allowedRaw == "*") return null
+    return allowedRaw.split(',')
+        .filter(Boolean)
+        .map(domain => "https://" + domain);
+})();
+
+
+//
+const originAllowed = (origin: string | null) => {
+    if (origin == null) return false
+    if (allowedOrigins == null) return true
+    return allowedOrigins.includes(origin)
+}
+
+//
+const forbidden = () => new Response("Requester not whitelisted. Should be either " + allowedOrigins?.join(','), { status: 403 }) 
 const corsRestricted = () => new Response("Please use CORS to access this", { status: 403 })
 
 //
