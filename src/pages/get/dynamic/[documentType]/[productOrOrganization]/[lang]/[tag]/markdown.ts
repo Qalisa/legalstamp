@@ -1,6 +1,6 @@
+import type { APIRoute } from 'astro';
 import { getEntry } from "astro:content";
 import { availableFormatsConfig } from "helpers/legalstamp.groupedBy";
-import type { APIRoute } from 'astro';
 
 export const prerender = false
 
@@ -70,14 +70,15 @@ export const GET: APIRoute = async ({ params, request: { headers }, url }) => {
     })()
 
     //
-    if ((!isCORSRequest && !bypass) || !authorized) {
+    if ((!isCORSRequest && !bypass) && !authorized) {
         return corsRestricted()
     }
 
     //
-    return authorized || originAllowed(origin) 
-        ? new Response(await getDocument(params), { headers: corsHeaders()}) 
-        : forbidden()
+    return authorized || originAllowed(origin) ? (async () => {
+        const doc = await getDocument(params)
+        return new Response(doc, { headers: corsHeaders()})  
+    })() : forbidden()
     
 }
 

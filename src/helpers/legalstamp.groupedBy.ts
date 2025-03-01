@@ -8,8 +8,8 @@ import { groupBySuccessive } from 'helpers/groupBySuccessive'
 export const TAG__LATEST = "latest" as const
 
 export const formatStubs = {
-  static: 'get/static',
-  dynamic: 'get/dynamic'
+  dynamic: 'get/dynamic',
+  static: 'get/static'
 } as const
 
 //
@@ -21,9 +21,9 @@ export const availableFormatsConfig = {
     name: 'html',
   },
   markdown: {
-    name: 'markdown',
     /** would only work on SSR */
     contentType: "text/markdown; charset=UTF-8",
+    name: 'markdown',
   }
 } as const
 
@@ -62,10 +62,10 @@ export const all = allDocs.flatMap(e => {
       ...e,
       meta: {
         documentType,
-        productOrOrganization,
+        format,
         lang,
-        tag,
-        format
+        productOrOrganization,
+        tag
       } satisfies Meta
     }
   })

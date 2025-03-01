@@ -1,8 +1,13 @@
 import eslintPluginAstro from 'eslint-plugin-astro';
 import sort from "eslint-plugin-sort"
 import unusedImports from "eslint-plugin-unused-imports";
+import tseslint from 'typescript-eslint';
 
-export default [
+export default tseslint.config([
+    tseslint.configs.recommended,
+{
+    ignores: ["dist/*", ".astro/*"]
+},
   // add more generic rule sets here, such as:
   // js.configs.recommended,
   ...eslintPluginAstro.configs.recommended,
@@ -12,9 +17,7 @@ export default [
           "unused-imports": unusedImports,
       },
       rules: {
-          "no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
-          "unused-imports/no-unused-imports": "error",
-          "unused-imports/no-unused-vars": [
+          "@typescript-eslint/no-unused-vars": [
               "warn",
               {
                   "args": "after-used",
@@ -25,4 +28,4 @@ export default [
           ]
       }
   }
-];
+]);

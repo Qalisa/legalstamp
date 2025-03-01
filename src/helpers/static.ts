@@ -3,7 +3,7 @@ import { getNestedValue } from 'helpers/groupBySuccessive';
 import { all, docFormatsMeta, type Grouping, type GroupingItem, type Meta, type Nullable } from 'helpers/legalstamp.groupedBy';
 
 //
-function getNestedValueFrom(obj: any, keyPaths: GroupingItem[], containFilter: GroupingItem) : string | null {
+function getNestedValueFrom(obj: Record<string, unknown>, keyPaths: GroupingItem[], containFilter: GroupingItem) : string | null {
     const foundKeyPath = keyPaths.find(e => e == containFilter)
     return foundKeyPath ? getNestedValue(obj, foundKeyPath) : null
 }
@@ -25,12 +25,12 @@ export function generateStaticPaths(grouping: Grouping, { onlyTags, squeezeTagPa
             const taking = grouping.slice(0, i + 1)
             all.map(e => {
                 return {
-                    slug: taking.map(i => getNestedValue(e, i)).join('/'),
                     documentType: getNestedValueFrom(e, taking, 'meta.documentType'),
-                    productOrOrganization: getNestedValueFrom(e, taking, 'meta.productOrOrganization'),
+                    format: null,
                     lang: getNestedValueFrom(e, taking, 'meta.lang'),
-                    tag: null,
-                    format: null
+                    productOrOrganization: getNestedValueFrom(e, taking, 'meta.productOrOrganization'),
+                    slug: taking.map(i => getNestedValue(e, i)).join('/'),
+                    tag: null
                 } 
             }).forEach(e => out.set(e.slug, e))
         }
@@ -40,12 +40,12 @@ export function generateStaticPaths(grouping: Grouping, { onlyTags, squeezeTagPa
     if (squeezeTagParam == false) {
         all.flatMap(e => {
             return {
-                slug: [...grouping, 'meta.tag'].map(i => getNestedValue(e, i)).join('/'),
                 documentType: getNestedValue(e, 'meta.documentType'),
-                productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
+                format: null,
                 lang: getNestedValue(e, 'meta.lang'),
-                tag: getNestedValue(e, 'meta.tag'),
-                format: null
+                productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
+                slug: [...grouping, 'meta.tag'].map(i => getNestedValue(e, i)).join('/'),
+                tag: getNestedValue(e, 'meta.tag')
             }
         }).forEach(e => out.set(e.slug, e))
     }
@@ -61,12 +61,12 @@ export function generateStaticPaths(grouping: Grouping, { onlyTags, squeezeTagPa
 
             //
             return {
-                slug: [withMetaSlug, format].join('/'),
                 documentType: getNestedValue(e, 'meta.documentType'),
-                productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
+                format,
                 lang: getNestedValue(e, 'meta.lang'),
-                tag: squeezeTagParam ? null : getNestedValue(e, 'meta.tag'),
-                format
+                productOrOrganization: getNestedValue(e, 'meta.productOrOrganization'),
+                slug: [withMetaSlug, format].join('/'),
+                tag: squeezeTagParam ? null : getNestedValue(e, 'meta.tag')
             }
         })
     }).forEach(e => out.set(e.slug, e))

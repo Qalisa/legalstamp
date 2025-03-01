@@ -1,6 +1,7 @@
 ---
 import type { GroupResult } from 'helpers/groupBySuccessive';
 import { sanitizePath } from 'helpers/sanitize';
+import type { ui } from 'i18n/ui';
 import { getLangFromUrl, useTranslations } from 'i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -8,10 +9,10 @@ const t = useTranslations(lang);
 
 interface Props {
   filter?: string[]
-  groupByResult?: GroupResult<any>
+  groupByResult?: GroupResult<unknown>
   originPathnameAgnostic?: boolean
   defaultPath: string
-  i18nPropertyName: string
+  i18nPropertyName: keyof typeof ui.en
   descriptioni18nPropertyName: string
   formatter?: (input: string) => string | undefined
 }
@@ -33,7 +34,6 @@ const description = t('pathDescr')[descriptioni18nPropertyName] ?? descriptioni1
 { elems.reverse().map(i => (
   <li>
     <a href={[base, i].join("/")}>{
-      // @ts-ignore
       t(i18nPropertyName)[i] ?? formatter?.(i) ?? i
     }</a>
   </li>

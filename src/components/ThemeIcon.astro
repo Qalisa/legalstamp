@@ -58,7 +58,7 @@ const { float, hide } = Astro.props;
       }
     }
 
-    darkMatch.addEventListener('change', _ => {
+    darkMatch.addEventListener('change', () => {
       toggleToTheme(getThemeFromMatch());
     });
 

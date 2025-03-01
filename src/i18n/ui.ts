@@ -7,13 +7,20 @@ export const defaultLang = 'en';
 
 export const ui = {
     en: {
+        'documentType': {
+            'privacy-policy': "Privacy Policy",
+            'use-agreement': "License",
+        },
         'lang': {
             'en': 'English',
             'fr': 'French'
         },
-        'documentType': {
-            'privacy-policy': "Privacy Policy",
-            'use-agreement': "License",
+        'pathDescr': {
+            "d": "📝 By Document Type",
+            "lang": "🈳 By Lang",
+            "latest": "🆕 Latest Documents in",
+            "p": "💼 By Product or Organization",
+            "tag": "🆔 Available Documents"
         },
         'productOrOrganization': {
             budivy: "BudIvy (Ivy C2C)",
@@ -21,23 +28,16 @@ export const ui = {
         },
         'tag': {
             'latest': "Latest"
-        },
-        'pathDescr': {
-            "latest": "🆕 Latest Documents in",
-            "p": "💼 By Product or Organization",
-            "d": "📝 By Document Type",
-            "lang": "🈳 By Lang",
-            "tag": "🆔 Available Documents"
         }
     },
     fr: {
-        'lang': {
-            'en': 'Anglais',
-            'fr': 'Français'
-        },
         'documentType': {
             'privacy-policy': "Politique de Confidentialité",
             'use-agreement': "License d'utilisation",
+        },
+        'lang': {
+            'en': 'Anglais',
+            'fr': 'Français'
         },
         'tag': {
             'latest': "Le + récent"
