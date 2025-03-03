@@ -75,25 +75,29 @@ export const GET: APIRoute = async ({ params, request: { headers }, url }) => {
     }
 
     //
-    return authorized || originAllowed(origin) ? (async () => {
-        const doc = await getDocument(params)
-        return new Response(doc, { headers: corsHeaders()})  
-    })() : forbidden()
+    return !authorized || !originAllowed(origin) 
+        ? forbidden(origin) 
+        : (async () => {
+            const doc = await getDocument(params)
+            return new Response(doc, { 
+                headers: basicHeaders({ whitelistedOrigin: isCORSRequest ? origin : undefined})
+            })  
+        })()
     
 }
 
 export const OPTIONS: APIRoute = async ({ request: { headers } }) => {
-    const origin = headers.get(HEADER_ORIGIN);
+    const origin = headers.get(HEADER_ORIGIN) ?? '';
 
     //
     if (originAllowed(origin)) {
         return new Response(null, {
-            headers: corsHeaders(origin!),
+            headers: basicHeaders({ whitelistedOrigin: origin }),
         });
     }
 
     //
-    return forbidden();
+    return forbidden(origin);
 }
 
 //
@@ -117,34 +121,83 @@ const getDocument = async (params: Record<string, string | undefined>) => {
     return entry.body
 }
 
+//
+const isDomainRootScopedPrefix = "*." as const
+const isDomainRootScoped = (arg: string) => arg.startsWith(isDomainRootScopedPrefix)
 
 //
-const allowedOrigins = (() => {
+const domainsWhitelist = (() => {
+    //
     const allowedRaw = (import.meta.env.CORS_ALLOW_ORIGIN ?? '')
-    if (allowedRaw == "*") return null
-    return allowedRaw.split(',')
-        .filter(Boolean)
-        .map(domain => "https://" + domain);
+    
+    // allow all, no whitelist
+    if (allowedRaw === "*") return null
+
+    //
+    const args = allowedRaw.split(',').filter(Boolean);
+    return {
+        /** */
+        allowedCatchalls: args
+            .filter(isDomainRootScoped) // only with "*."
+            .map(e => e.slice(isDomainRootScopedPrefix.length)) // remove "*."
+            .filter(Boolean), // no empty values
+        /** */
+        allowedSingles: args
+            .filter((e) => !isDomainRootScoped(e))
+            .map(domain => {
+                // already including scheme, nothing to do
+                if (domain.startsWith('http://') || domain.startsWith('https://')) {
+                    return domain
+                }
+
+                // requires https by default
+                return "https://" + domain
+            })
+    }
 })();
 
 
+// no whitelist ? all allowed
+const originAllowed = domainsWhitelist == null 
+    ? () => true 
+    : (origin: string | null) => {
+        // no "Origin" ? not allowed
+        if (origin == null || origin == '') return false
+
+        // does "Origin" respect exact match of any singles whitelisted ?
+        if(domainsWhitelist.allowedSingles.includes(origin)) return true
+        
+        // does the "Origin" hostname part (eg, without scheme and port) ends with any allowed catchall ?
+        return domainsWhitelist.allowedCatchalls.some(domain => 
+            new URL(origin).hostname.endsWith(domain)
+        )
+    }
+
 //
-const originAllowed = (origin: string | null) => {
-    if (origin == null) return false
-    if (allowedOrigins == null) return true
-    return allowedOrigins.includes(origin)
+const forbidden = (origin: string) => {
+    //
+    const message = "Requester not whitelisted. Should be either " + 
+            (domainsWhitelist 
+                ? [...domainsWhitelist.allowedSingles, ...domainsWhitelist.allowedCatchalls] 
+                : []
+            ).join(',')
+
+    //
+    console.log("CORS Access rejected", message, ". Origin: ", origin)
+
+    //
+    return new Response(message, { status: 403 })
 }
+const corsRestricted = () => new Response("Please use CORS to access this ressource.", { status: 403 })
 
 //
-const forbidden = () => new Response("Requester not whitelisted. Should be either " + allowedOrigins?.join(','), { status: 403 }) 
-const corsRestricted = () => new Response("Please use CORS to access this", { status: 403 })
-
-//
-const corsHeaders = (whOrigin?: string) : HeadersInit => ({
-    "Access-Control-Allow-Headers": [
-        ...allowAuthorizationOnToken ? [HEADER_AUTHORIZATION]: []
-    ].join(', '),
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
-    "Access-Control-Allow-Origin": whOrigin ?? 'null',
+const basicHeaders = ({ whitelistedOrigin } : { whitelistedOrigin?: string }) : HeadersInit => ({
+    ...whitelistedOrigin != null ? {
+        "Access-Control-Allow-Headers": [
+            ...allowAuthorizationOnToken ? [HEADER_AUTHORIZATION]: []
+        ].join(', '),
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Origin": whitelistedOrigin ?? '*',
+    } : {},
     "Content-Type": availableFormatsConfig['markdown'].contentType,
 })
