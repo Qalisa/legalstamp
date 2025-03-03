@@ -16,10 +16,10 @@ const BYPASS_KEYWORD = 'bypass' as const
 //
 //
 
-export const injectBypass = (path: string) => `${path}?${BYPASS_KEYWORD}`
-const shouldHandleBypassAttempts = import.meta.env.DEV
-const allowedToBypass = (url: URL) => 
-    shouldHandleBypassAttempts && url.searchParams.get(BYPASS_KEYWORD) != null
+export const injectBypassShortcutTo = (path: string) => `${path}?${BYPASS_KEYWORD}`
+const shouldHandleCORSBypassAttempts = import.meta.env.DEV
+const doBypassCORSProtection = (url: URL) => 
+    shouldHandleCORSBypassAttempts && url.searchParams.get(BYPASS_KEYWORD) != null
 
 //
 //
@@ -44,8 +44,8 @@ export const getMarkdownPage = () => {
 
     //
     return [
-        `Markdown ${shouldHandleBypassAttempts ? '' : ' (CORS) '}#️⃣`, 
-        shouldHandleBypassAttempts ? injectBypass(pathTo) : pathTo
+        `Markdown ${shouldHandleCORSBypassAttempts ? '' : ' (CORS) '}#️⃣`, 
+        shouldHandleCORSBypassAttempts ? injectBypassShortcutTo(pathTo) : pathTo
     ] as const
 }
 
@@ -58,24 +58,33 @@ export const GET: APIRoute = async ({ params, request: { headers }, url }) => {
     //
     const origin = headers.get(HEADER_ORIGIN) ?? ''
     const isCORSRequest = origin != ""
-    const bypass = allowedToBypass(url)
+    const bypassCORS = doBypassCORSProtection(url)
 
     //
-    const authorized = !allowAuthorizationOnToken ? false : (() => {
-        const rawAuth = headers.get(HEADER_AUTHORIZATION)
-        if (!rawAuth) return false
-        const [method, token] = rawAuth?.split(' ')
-        if (method != "Bearer") return false
-        return allowAuthorizationOnToken == token
-    })()
-
-    //
-    if ((!isCORSRequest && !bypass) && !authorized) {
+    if (!bypassCORS && !isCORSRequest) {
         return corsRestricted()
     }
 
     //
-    return !authorized || !originAllowed(origin) 
+    const authorized = (() => {
+        //
+        if (bypassCORS) return true
+        if (allowAuthorizationOnToken == null) return false
+
+        //
+        const rawAuth = headers.get(HEADER_AUTHORIZATION)
+        if (!rawAuth) return false
+
+        //
+        const [method, token] = rawAuth?.split(' ')
+        if (method != "Bearer") return false // Requires Bearer auth
+
+        //
+        return allowAuthorizationOnToken == token
+    })()
+
+    //
+    return !authorized && !originAllowed(origin)
         ? forbidden(origin) 
         : (async () => {
             const doc = await getDocument(params)
