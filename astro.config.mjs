@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 //
 const site = (() => {
-  const site = import.meta.env.CANONICAL_URL
+  const site = process.env.CANONICAL_URL // must be process.env and not import.meta.env
   if (site == null || site == "") return "http://localhost:4321"
   return site
 })();
