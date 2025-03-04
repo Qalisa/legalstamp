@@ -33,7 +33,7 @@ const allowAuthorizationOnToken = (() => {
 
 //
 const getOrigin = (headers: Headers) => {
-    return headers.get('Origin') ?? headers.get('Referer') ??  headers.get('Host');
+    return headers.get('Origin') ?? headers.get('Referer'); // ?? headers.get('Host');
 }
 
 //
