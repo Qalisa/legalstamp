@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getEntry } from "astro:content";
-import { availableFormatsConfig } from "helpers/legalstamp.groupedBy";
+import { availableFormatsConfig } from "config";
 
 export const prerender = false
 

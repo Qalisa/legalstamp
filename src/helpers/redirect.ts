@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro"
-import { availableFormatsConfig, formatStubs } from "./legalstamp.groupedBy"
+import { availableFormatsConfig, formatStubs } from "config"
 
 export const markdown_GET: APIRoute = async ({ params: { documentType, lang, productOrOrganization, tag }, rewrite, url }) => {
     //

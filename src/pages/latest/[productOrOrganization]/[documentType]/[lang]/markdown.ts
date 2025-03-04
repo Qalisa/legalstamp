@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { TAG__LATEST } from "helpers/legalstamp.groupedBy";
+import { TAG__LATEST } from "config";
 import { markdown_GET } from "helpers/redirect";
 
 export const prerender = false
