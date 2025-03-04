@@ -14,19 +14,12 @@ COPY package.json pnpm-lock.yaml ./
 
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
-###
-FROM base AS prod-deps
-RUN pnpm install --prod --frozen-lockfile
-
-FROM base AS build-deps
-RUN pnpm install --frozen-lockfile
-
-FROM build-deps AS build
+FROM base AS build
 COPY . .
+RUN pnpm install --frozen-lockfile
 RUN pnpm run build
 
 FROM base AS lean
-COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 
 ENV HOST=0.0.0.0
