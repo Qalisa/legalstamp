@@ -7,9 +7,10 @@ import tailwindcss from '@tailwindcss/vite';
 
 //
 const site = (() => {
-  const site = process.env.CANONICAL_URL // must be process.env and not import.meta.env
+  let site = process.env.CANONICAL_URL // must be process.env and not import.meta.env
   if (site == null || site == "") return "http://localhost:4321"
-  return site
+  if (site.startsWith('http://') || site.startsWith('https://')) return site
+  return 'https://' + site
 })();
 
 console.log("[Info] site is =>", site)
