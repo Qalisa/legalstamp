@@ -1,33 +1,6 @@
 import { getCollection } from 'astro:content';
+import { availableFormatsConfig } from 'config';
 import { groupBySuccessive } from 'helpers/groupBySuccessive'
-
-//
-//
-//
-
-export const TAG__LATEST = "latest" as const
-
-export const formatStubs = {
-  dynamic: 'get/dynamic',
-  static: 'get/static'
-} as const
-
-//
-export const availableFormatsConfig = {
-  enhanced: {
-    name: 'enhanced',
-  },
-  html: {
-    name: 'html',
-  },
-  markdown: {
-    /** would only work on SSR */
-    contentType: "text/markdown; charset=UTF-8",
-    name: 'markdown',
-  }
-} as const
-
-export const defaultDocFormatConfig = availableFormatsConfig.enhanced
 
 type DocFormat = keyof typeof availableFormatsConfig
 

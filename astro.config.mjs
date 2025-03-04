@@ -4,7 +4,7 @@ import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import { defaultDocFormatConfig } from 'helpers/legalstamp.groupedBy';
+import { defaultDocFormatConfig } from './src/config';
 
 //
 const site = (() => {
