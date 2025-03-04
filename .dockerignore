@@ -1,7 +1,11 @@
 Dockerfile
 node_modules
 dist
+dev
+specs
+.helm
 .vscode
 .helm-values
 .github
 .astro
+README.md
