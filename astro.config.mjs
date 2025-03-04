@@ -4,6 +4,7 @@ import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import { defaultDocFormatConfig } from 'helpers/legalstamp.groupedBy';
 
 //
 const site = (() => {
@@ -25,7 +26,12 @@ export default defineConfig({
     defaultLocale: "en",
     locales: ["fr", "en"],
   },
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap({
+    filter: (page) => {
+      const { pathname } = new URL(page);
+      return !pathname.startsWith('/get') && !pathname.endsWith(defaultDocFormatConfig.name + '/')
+    }
+  })],
 
   site,
 
