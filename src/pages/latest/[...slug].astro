@@ -1,9 +1,10 @@
 ---
 import DocumentType from 'components/ListBy/DocumentType.astro';
 import Lang from 'components/ListBy/Lang.astro';
+import { defaultDocFormatConfig, formatStubs, TAG__LATEST } from 'config';
 import { renderingDeadEnd } from 'helpers/error';
 import { successiveFilterByValues } from 'helpers/groupBySuccessive';
-import { defaultDocFormatConfig, formatStubs, productOrOrgFirst, TAG__LATEST } from 'helpers/legalstamp.groupedBy';
+import { productOrOrgFirst } from 'helpers/legalstamp.groupedBy';
 import { generateStaticPaths } from 'helpers/static';
 import Layout from 'layouts/Layout.astro';
 
