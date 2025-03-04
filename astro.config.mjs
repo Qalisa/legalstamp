@@ -4,14 +4,12 @@ import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import { defaultDocFormatConfig } from './src/config';
 
 //
 const site = (() => {
-  let site = process.env.CANONICAL_URL // must be process.env and not import.meta.env
+  const site = import.meta.env.CANONICAL_URL
   if (site == null || site == "") return "http://localhost:4321"
-  if (site.startsWith('http://') || site.startsWith('https://')) return site
-  return 'https://' + site
+  return site
 })();
 
 console.log("[Info] site is =>", site)
@@ -26,12 +24,7 @@ export default defineConfig({
     defaultLocale: "en",
     locales: ["fr", "en"],
   },
-  integrations: [mdx(), sitemap({
-    filter: (page) => {
-      const { pathname } = new URL(page);
-      return !pathname.startsWith('/get') && !pathname.endsWith(defaultDocFormatConfig.name + '/')
-    }
-  })],
+  integrations: [mdx(), sitemap()],
 
   site,
 

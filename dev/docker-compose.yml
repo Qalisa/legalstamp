@@ -4,11 +4,15 @@ services:
     build:
       context: ..
       args:
-        K8S_APP__VERSION: "0.dev-compose"
+        K8S_APP__VERSION: "0.0.0-dev"
         CORS_ALLOW_ORIGIN: "*"
-        CANONICAL_URL: http://localhost
       dockerfile: Dockerfile
       tags:
         - latest
     ports:
       - "4321:80"
+    environment:
+      # will be filled in k8s cluster
+      K8S_APP__IMAGE_VERSION: "local"
+      K8S_APP__IMAGE_REVISION: "00000000000000000"
+      CORS_AUTH_BEARER_TOKEN: "testtest"
