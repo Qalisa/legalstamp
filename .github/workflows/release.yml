@@ -26,18 +26,16 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     # 
-    - name: Extract appVersion from Helm Chart
-      id: helm-app-version
+    - name: Extract data from Helm Chart values
+      id: data-from-helm
       run: |
         APP_VERSION=$(yq e '.appVersion' .helm/Chart.yaml)
-        echo "appVersion=${APP_VERSION}" >> $GITHUB_OUTPUT
-
-    - name: Extract and format allowed domains
-      id: helm-allowed-cors
-      run: |
         CORS_ALLOW_ORIGIN=$(yq -r '.cors.allowOriginFrom | join(",")' .helm-values/values.${{ github.ref_name }}.yaml)
+        CANONICAL_URL=$(yq -r '.ingress.hosts[0]' .helm-values/values.${{ github.ref_name }}.yaml)
+        echo "appVersion=${APP_VERSION}" >> $GITHUB_OUTPUT
         echo "allowedCors=${CORS_ALLOW_ORIGIN}" >> $GITHUB_OUTPUT
-
+        echo "canonicalUrl=${CANONICAL_URL}" >> $GITHUB_OUTPUT
+        
     #
     - name: Compute full image location
       id: meta-pre
@@ -54,9 +52,9 @@ jobs:
         images: ${{ steps.meta-pre.outputs.full_image_location }}
         tags: |
           type=ref,event=branch
-          type=raw,value=${{ steps.helm-app-version.outputs.appVersion }},enable=${{ github.ref == 'refs/heads/main' }}
-          type=raw,value=${{ github.ref_name }}-${{ steps.helm-app-version.outputs.appVersion }}
-          type=raw,value=${{ steps.helm-app-version.outputs.appVersion }}-${{ github.ref_name }}
+          type=raw,value=${{ steps.data-from-helm.outputs.appVersion }},enable=${{ github.ref == 'refs/heads/main' }}
+          type=raw,value=${{ github.ref_name }}-${{ steps.data-from-helm.outputs.appVersion }}
+          type=raw,value=${{ steps.data-from-helm.outputs.appVersion }}-${{ github.ref_name }}
     
     #
     - name: Build and push
@@ -67,8 +65,9 @@ jobs:
         push: true
         target: lean
         build-args: |
-          K8S_APP__VERSION=${{ steps.helm-app-version.outputs.appVersion }}
-          CORS_ALLOW_ORIGIN=${{ steps.helm-allowed-cors.outputs.allowedCors }}
+          K8S_APP__VERSION=${{ steps.data-from-helm.outputs.appVersion }}
+          CORS_ALLOW_ORIGIN=${{ steps.data-from-helm.outputs.allowedCors }}
+          CANONICAL_URL=${{ steps.data-from-helm.outputs.canonicalUrl }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         #

@@ -3,7 +3,5 @@ ingress:
     - legal.qalisa.fr
 cors:
   allowOriginFrom:
-    - qalisa.fr
-    - www.qalisa.fr
-    - ivy.community
-    - www.ivy.community
+    - "*.qalisa.fr"
+    - "*.ivy.community"

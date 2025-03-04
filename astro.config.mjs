@@ -5,6 +5,15 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
+//
+const site = (() => {
+  const site = import.meta.env.CANONICAL_URL
+  if (site == null || site == "") return "http://localhost:4321"
+  return site
+})();
+
+console.log("[Info] site is =>", site)
+
 // https://astro.build/config
 export default defineConfig({
   adapter: node({
@@ -17,9 +26,10 @@ export default defineConfig({
   },
   integrations: [mdx(), sitemap()],
 
+  site,
+
   trailingSlash: "ignore",
 
-  // TODO: fill (https://docs.astro.build/en/guides/integrations-guide/sitemap/)
   vite: {
     plugins: [tailwindcss()]
   },

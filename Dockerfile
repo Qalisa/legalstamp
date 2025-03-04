@@ -2,11 +2,13 @@
 FROM node:alpine AS base
 ARG K8S_APP__VERSION="unknown"
 ARG CORS_ALLOW_ORIGIN=""
+ARG CANONICAL_URL="http://define-me.pls"
 
 WORKDIR /app
 
 ENV K8S_APP__VERSION=$K8S_APP__VERSION
 ENV CORS_ALLOW_ORIGIN=$CORS_ALLOW_ORIGIN
+ENV CANONICAL_URL=$CANONICAL_URL
 
 # By copying only the package.json and package-lock.json here, we ensure that the following `-deps` steps are independent of the source code.
 # Therefore, the `-deps` steps will be skipped if only the source code changes.

@@ -8,7 +8,6 @@ export const prerender = false
 //
 //
 
-const HEADER_ORIGIN = 'Origin' as const
 const HEADER_AUTHORIZATION = 'Authorization' as const
 const BYPASS_KEYWORD = 'bypass' as const
 
@@ -31,6 +30,11 @@ const allowAuthorizationOnToken = (() => {
         ? null
         : CORS_AUTH_BEARER_TOKEN
 })()
+
+//
+const getOrigin = (headers: Headers) => {
+    return headers.get('Origin') ?? headers.get('Referer') ??  headers.get('Host');
+}
 
 //
 //
@@ -56,7 +60,7 @@ export const getMarkdownPage = () => {
 //
 export const GET: APIRoute = async ({ params, request: { headers }, url }) => {
     //
-    const origin = headers.get(HEADER_ORIGIN) ?? ''
+    const origin = getOrigin(headers) ?? ''
     const isCORSRequest = origin != ""
     const bypassCORS = doBypassCORSProtection(url)
 
@@ -96,7 +100,7 @@ export const GET: APIRoute = async ({ params, request: { headers }, url }) => {
 }
 
 export const OPTIONS: APIRoute = async ({ request: { headers } }) => {
-    const origin = headers.get(HEADER_ORIGIN) ?? '';
+    const origin = getOrigin(headers) ?? '';
 
     //
     if (originAllowed(origin)) {
