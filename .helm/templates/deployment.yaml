@@ -6,6 +6,7 @@ metadata:
   labels:
     {{- include "helpers.labels" . | nindent 4 }}
 spec:
+  revisionHistoryLimit: 0
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -31,7 +32,6 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      revisionHistoryLimit: 0
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.securityContext }}
