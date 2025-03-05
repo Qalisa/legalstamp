@@ -49,23 +49,44 @@ const allowAuthorizationOnToken = (() => {
 
 //
 const getOrigin = (headers: Headers, _?: Log) => {
+    //
+    const [pickedOrigin, reason] = _getOrigin(headers);
+
+    //
+    if (_)
+        _.origin = {
+            pickedOrigin,
+            reason,
+        }
+
+    //
+    return pickedOrigin; 
+}
+
+// we'll also be using "Host" so that server-to-server, which often do not add "Origin" header can still be secured by CORS
+// assume HTTPS
+// TODO: detect SSL to set scheme ?
+// TODO: make it safer ?
+const _getOrigin = (headers: Headers) => {
+    //
     const origin = headers.get('Origin')
     const referer = headers.get('Referer')
     const host = headers.get('Host')
 
     //
-    if (_)
-        _.origin = {
-            host,
-            origin,
-            referer
-        }
-    
-    // we'll also be using "Host" so that server-to-server, which often do not add "Origin" header can still be secured by CORS
-    // assume HTTPS
-    // TODO: detect SSL to set scheme ?
-    return origin ?? "https://" + host; 
+    if (origin) {
+        return [origin, "OK, using Origin"] as const
+    }
+
+    //
+    if (host && referer == null) {
+        return ["https://" + host, "OK, using Host (because no Referer)"] as const
+    }
+
+    //
+    return [null, "NOK, No Origin, or Referer defined"] as const
 }
+
 
 //
 //
@@ -110,24 +131,24 @@ const _originAllowed = domainsWhitelist == null
     ? () => [true, "OK, no whitelist"]
     : (origin: string | null) => {
         // no "Origin" ? not allowed
-        if (origin == null || origin == '') return [false, "NOK, origin empty"]
+        if (origin == null || origin == '') return [false, "NOK, origin empty"] as const
 
         // does "Origin" respect exact match of any singles whitelisted ?
-        if(domainsWhitelist!.allowedSingles.includes(origin)) return [true, "OK, origin in singles whitelist"]
+        if(domainsWhitelist!.allowedSingles.includes(origin)) return [true, "OK, origin in singles whitelist"] as const
         
         //
         let originUrl = null
         try {
             originUrl = new URL(origin)
         } catch {
-            return [false, "NOK, origin '" + origin + "' is no URL"]
+            return [false, "NOK, origin '" + origin + "' is no URL"] as const
         }
 
         // does the "Origin" hostname part (eg, without scheme and port) ends with any allowed catchall ?
         const inCatchallWhitelist = domainsWhitelist!.allowedCatchalls.some(domain => 
             originUrl.hostname.endsWith(domain)
         )
-        return [inCatchallWhitelist, inCatchallWhitelist ? "OK, origin in catchall whitelist" : "NOK, origin not in whitelist (singles / catchall)"]
+        return [inCatchallWhitelist, inCatchallWhitelist ? "OK, origin in catchall whitelist" : "NOK, origin not in whitelist (singles / catchall)"] as const
     }
 
 //
@@ -193,20 +214,20 @@ export const GET: APIRoute = async ({ params, request: { headers }, url }) => {
     //
     const [authorized, authLog ] = (() => {
         //
-        if (bypassCORS) return [true, "OK, bypass"]
-        if (allowAuthorizationOnToken == null) return [false, "NOK, no token configured on server"]
+        if (bypassCORS) return [true, "OK, bypass"] as const
+        if (allowAuthorizationOnToken == null) return [false, "NOK, no token configured on server"] as const
 
         //
         const rawAuth = headers.get(HEADER_AUTHORIZATION)
-        if (!rawAuth) return [false, "NOK, No Authorization header in req"]
+        if (!rawAuth) return [false, "NOK, No Authorization header in req"] as const
 
         //
         const [method, token] = rawAuth?.split(' ')
-        if (method != "Bearer") return [false, "NOK, No Bearer auth method on req"] // Requires Bearer auth
+        if (method != "Bearer") return [false, "NOK, No Bearer auth method on req"] as const // Requires Bearer auth
 
         //
         const match = allowAuthorizationOnToken == token
-        return [match, match ? "OK, Token match" : "NOK, Token Missmatch"]
+        return [match, match ? "OK, Token match" : "NOK, Token Missmatch"] as const
     })()
 
     //
