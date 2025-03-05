@@ -61,8 +61,10 @@ const getOrigin = (headers: Headers, _?: Log) => {
             referer
         }
     
-    //
-    return origin ?? host; // we'll also be using "Host" so that server-to-server, which often do not add "Origin" header can still be secured by CORS
+    // we'll also be using "Host" so that server-to-server, which often do not add "Origin" header can still be secured by CORS
+    // assume HTTPS
+    // TODO: detect SSL to set scheme ?
+    return origin ?? "https://" + host; 
 }
 
 //
@@ -113,9 +115,17 @@ const _originAllowed = domainsWhitelist == null
         // does "Origin" respect exact match of any singles whitelisted ?
         if(domainsWhitelist!.allowedSingles.includes(origin)) return [true, "OK, origin in singles whitelist"]
         
+        //
+        let originUrl = null
+        try {
+            originUrl = new URL(origin)
+        } catch {
+            return [false, "NOK, origin '" + origin + "' is no URL"]
+        }
+
         // does the "Origin" hostname part (eg, without scheme and port) ends with any allowed catchall ?
         const inCatchallWhitelist = domainsWhitelist!.allowedCatchalls.some(domain => 
-            new URL(origin).hostname.endsWith(domain)
+            originUrl.hostname.endsWith(domain)
         )
         return [inCatchallWhitelist, inCatchallWhitelist ? "OK, origin in catchall whitelist" : "NOK, origin not in whitelist (singles / catchall)"]
     }
