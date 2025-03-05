@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getEntry } from "astro:content";
 import { availableFormatsConfig } from "config";
+import { domainsWhitelist } from 'config/corsWhitelist';
 
 export const prerender = false
 
@@ -61,7 +62,7 @@ const getOrigin = (headers: Headers, _?: Log) => {
         }
     
     //
-    return origin; // ?? referer; ?? host;
+    return origin ?? host; // we'll also be using "Host" so that server-to-server, which often do not add "Origin" header can still be secured by CORS
 }
 
 //
@@ -102,42 +103,6 @@ const getDocument = async (params: Record<string, string | undefined>) => {
     return entry.body
 }
 
-//
-const isDomainRootScopedPrefix = "*." as const
-const isDomainRootScoped = (arg: string) => arg.startsWith(isDomainRootScopedPrefix)
-
-//
-const domainsWhitelist = (() => {
-    //
-    const allowedRaw = (import.meta.env.CORS_ALLOW_ORIGIN ?? '')
-    
-    // allow all, no whitelist
-    if (allowedRaw === "*") return null
-
-    //
-    const args = allowedRaw.split(',').filter(Boolean);
-    return {
-        /** */
-        allowedCatchalls: args
-            .filter(isDomainRootScoped) // only with "*."
-            .map(e => e.slice(isDomainRootScopedPrefix.length)) // remove "*."
-            .filter(Boolean), // no empty values
-        /** */
-        allowedSingles: args
-            .filter((e) => !isDomainRootScoped(e))
-            .map(domain => {
-                // already including scheme, nothing to do
-                if (domain.startsWith('http://') || domain.startsWith('https://')) {
-                    return domain
-                }
-
-                // requires https by default
-                return "https://" + domain
-            })
-    }
-})();
-
-
 // no whitelist ? all allowed
 const _originAllowed = domainsWhitelist == null 
     ? () => [true, "OK, no whitelist"]
@@ -146,10 +111,10 @@ const _originAllowed = domainsWhitelist == null
         if (origin == null || origin == '') return [false, "NOK, origin empty"]
 
         // does "Origin" respect exact match of any singles whitelisted ?
-        if(domainsWhitelist.allowedSingles.includes(origin)) return [true, "OK, origin in singles whitelist"]
+        if(domainsWhitelist!.allowedSingles.includes(origin)) return [true, "OK, origin in singles whitelist"]
         
         // does the "Origin" hostname part (eg, without scheme and port) ends with any allowed catchall ?
-        const inCatchallWhitelist = domainsWhitelist.allowedCatchalls.some(domain => 
+        const inCatchallWhitelist = domainsWhitelist!.allowedCatchalls.some(domain => 
             new URL(origin).hostname.endsWith(domain)
         )
         return [inCatchallWhitelist, inCatchallWhitelist ? "OK, origin in catchall whitelist" : "NOK, origin not in whitelist (singles / catchall)"]
