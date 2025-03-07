@@ -1,15 +1,10 @@
-export const languages = {
-    en: 'English',
-    fr: 'Français',
-};
-  
-export const defaultLang = 'en';
-
+//
 export const ui = {
     en: {
         'documentType': {
+            'general-conditions-sales': "General Conditions of Sales",
             'privacy-policy': "Privacy Policy",
-            'use-agreement': "License",
+            'use-agreement': "License"
         },
         'lang': {
             'en': 'English',
@@ -24,7 +19,8 @@ export const ui = {
         },
         'productOrOrganization': {
             budivy: "BudIvy (Ivy C2C)",
-            'ivy-community': "Ivy (Ivy B2B)"
+            'ivy-community': "Ivy (Ivy B2B)",
+            qalisa: "Qalisa"
         },
         'tag': {
             'latest': "Latest"
@@ -32,8 +28,9 @@ export const ui = {
     },
     fr: {
         'documentType': {
+            'general-conditions-sales': "Conditions Générales de Vente",
             'privacy-policy': "Politique de Confidentialité",
-            'use-agreement': "License d'utilisation",
+            'use-agreement': "Contrat de License",
         },
         'lang': {
             'en': 'Anglais',
@@ -44,3 +41,13 @@ export const ui = {
         }
     },
 } as const;
+
+//
+export const defaultLang = 'en' satisfies keyof typeof ui;
+
+//
+export const languages = {
+    en: ui.en.lang.en,
+    fr: ui.fr.lang.fr,
+} as const satisfies { [key in keyof typeof ui]: string }
+
