@@ -13,17 +13,17 @@ Qalisa, a company by Simplified Joint Stock Company with a capital of
 1000 euros, registered with the RCS of Orléans under number 919 856 328,
 and owner and sole operator of the Application and the IVY brand, whose
 registered office is located at 14 Avenue de la Marne, 45000 Orléans,
-France and represented by its President, Mr. Michel Nsenga Pedro. (Here
+France and represented by its President, Mr. Michel Nsenga Pedro. (Here
 in after referred to as the publisher).
 
-**IMPORTANT** -- Installation or use of the software implies unreserved
+**IMPORTANT** – Installation or use of the software implies unreserved
 acceptance of the license agreement. This Agreement also applies to any
 subsequent updates or new versions of the Software.
 
 The license agreement is concluded between the publisher of the software
 and the user of this software.
 
-**Intellectual Property -- License to Use**
+**Intellectual Property – License to Use**
 
 The publisher is the exclusive owner of the economic intellectual
 property rights of the software and all the content incorporated into
@@ -42,7 +42,7 @@ without formality, in case of breach by the user of this contract.
 The publisher reserves all rights not expressly granted to the user by
 this contract.
 
-**Software Description and Purpose -- Essential Software Features and
+**Software Description and Purpose – Essential Software Features and
 Digital Content Functionality**
 
 Ivy software is a friendly dating app. His approach is to put envy back
@@ -59,23 +59,23 @@ specific category (or categories).
 
 The features of digital content are as follows:
 
--   In-app purchases
+- In-app purchases
 
--   Affiliation
+- Affiliation
 
--   FAQ
+- FAQ
 
--   Geolocation
+- Geolocation
 
--   Instant messaging
+- Instant messaging
 
--   Notifications Push
+- Notifications Push
 
--   Content sharing
+- Content sharing
 
 The list is not exhaustive.
 
-**Warning -- Instructions for Use**
+**Warning – Instructions for Use**
 
 The software may distribute, include, or make available third-party
 content (including data, information, services) or provide links to
@@ -116,7 +116,7 @@ the translation, adaptation, arrangement or any other modification of
 the software, will be subject. These modalities will be communicated to
 the user who makes the request at the team@budivy.fr address.
 
-**Configuration -- technical prerequisites**
+**Configuration – technical prerequisites**
 
 The software is designed to work with the following operating systems:
 Android and iOS.
@@ -133,40 +133,40 @@ to update his information without delay.
 
 The mandatory information is as follows:
 
--   Phone number
+- Phone number
 
--   Sex
+- Sex
 
--   Nickname
+- Nickname
 
--   Photo
+- Photo
 
 Optional information includes:
 
--   Email address
+- Email address
 
 **Personal data**
 
 Refer to the personal data processing policy.
 
-**Paid version -- Subscription -- In-app purchases**
+**Paid version – Subscription – In-app purchases**
 
 The paid version of the software offers the following features for
 non-professional use:
 
--   Access to personalization elements
+- Access to personalization elements
 
--   Increased limits for saving maps
+- Increased limits for saving maps
 
--   Possibility of access to his friends
+- Possibility of access to his friends
 
--   Limit of participants to an increased activity
+- Limit of participants to an increased activity
 
--   Possibility to add a participation fee
+- Possibility to add a participation fee
 
--   Premium badge
+- Premium badge
 
--   Access to Travel Mode
+- Access to Travel Mode
 
 The Premium subscription is available without commitment (€24.99/month)
 or with a commitment of 3 months (€15.99/month), 6 months (€7.49/month)
@@ -175,31 +175,46 @@ or 12 months (€4.99/month).
 The paid version of the software offers the following features for
 professional use:
 
--   Realization of Boost promotional campaigns for a period of 3 months
+- Realization of Boost promotional campaigns for a period of 3 months
 
--   Realization of sponsored cards with redirection to third-party site
+- Realization of sponsored cards with redirection to third-party site
 
--   Map customization
+- Map customization
 
--   Proposing maps in the \"Discovery\" mode
+- Proposing maps in the "Discovery" mode
 
--   Support by a partner(s) to improve your copywriting and professional
-    image
+- Support by a partner(s) to improve your copywriting and professional
+  image
 
-+-----------------------------+----------------------------------------+
-| Boost Campaign              | 1250€ HT per quarter                   |
-+:===========================:+:======================================:+
-| Basic Formula               | Annual subscription 2000 € HT          |
-+-----------------------------+----------------------------------------+
-| Discovery Formula           | Annual Subscription + Personalization  |
-|                             | Elements +^2nd^ Circle Promotion       |
-|                             |                                        |
-|                             | 2500€ HT                               |
-+-----------------------------+----------------------------------------+
-| Expert Formula              | Discovery + Accompaniment              |
-|                             |                                        |
-|                             | From 3250€ HT                          |
-+-----------------------------+----------------------------------------+
+<table style="width:99%;">
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Boost Campaign</th>
+<th style="text-align: center;">1250€ HT per quarter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Basic Formula</td>
+<td style="text-align: center;">Annual subscription 2000 € HT</td>
+</tr>
+<tr>
+<td style="text-align: center;">Discovery Formula</td>
+<td style="text-align: center;"><p>Annual Subscription + Personalization
+Elements +<sup>2nd</sup> Circle Promotion</p>
+<p>2500€ HT</p></td>
+</tr>
+<tr>
+<td style="text-align: center;">Expert Formula</td>
+<td style="text-align: center;"><p>Discovery + Accompaniment</p>
+<p>From 3250€ HT</p></td>
+</tr>
+</tbody>
+</table>
 
 The subscription is automatically renewed by tacit agreement, unless you
 cancel before the end of the commitment period. A reminder of this
@@ -241,11 +256,11 @@ software implies acceptance of these conditions.
 
 **Third Party Software and Services**
 
--   In-app payments via Stripe
+- In-app payments via Stripe
 
--   Geolocation via Google Maps (Android) or Maps (iOS)
+- Geolocation via Google Maps (Android) or Maps (iOS)
 
--   NFC
+- NFC
 
 **Disclaimer of Warranty and Liability**
 
@@ -307,7 +322,7 @@ the Consumer Code.
 
 If the consumer is not domiciled in France but in another Member State
 of the European Union, jurisdiction is defined by Articles 17 to 19 of
-European Union Regulation No. 1215/2012 of 12 December 2012. By way of
+European Union Regulation No. 1215/2012 of 12 December 2012. By way of
 derogation, the French courts **are exclusively competent to hear any
 dispute that may arise between the publisher and the consumer if the
 latter has, at the time of the conclusion of the contract, his domicile
