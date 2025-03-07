@@ -4,8 +4,11 @@ import { getEntry } from "astro:content";
 import { availableFormatsConfig, defaultDocFormatConfig } from "config";
 import {  productOrOrgFirst } from "helpers/legalstamp.groupedBy";
 import { generateStaticPaths } from "helpers/static";
+import { getLangFromUrl, useTranslations } from 'i18n/utils';
 import LeanLayout from "layouts/LeanLayout.astro";
 import { getMarkdownPage } from "../dynamic/[documentType]/[productOrOrganization]/[lang]/[tag]/markdown";
+
+const t = useTranslations(getLangFromUrl(Astro.url));
 
 export async function getStaticPaths() {
     return generateStaticPaths(productOrOrgFirst.grouping, { onlyTags: true, squeezeTagParam: false })
@@ -25,8 +28,9 @@ if (!entry) {
 const defaultedFormat = format ?? defaultDocFormatConfig.name
 
 const { Content, headings } = await render(entry);
+const title = headings[0]?.text ?? t('documentType')[documentType]
 ---
-<LeanLayout isEnhanced={defaultedFormat == 'enhanced'} title={headings[0].text}>
+<LeanLayout isEnhanced={defaultedFormat == 'enhanced'} {title}>
     <Content />
     <Fragment slot="links">
         {[
