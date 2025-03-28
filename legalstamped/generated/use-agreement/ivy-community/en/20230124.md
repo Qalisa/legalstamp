@@ -114,7 +114,7 @@ affecting the software and to determine the special modalities to which
 the permanent or provisional reproduction of the software, as well as
 the translation, adaptation, arrangement or any other modification of
 the software, will be subject. These modalities will be communicated to
-the user who makes the request at the team@budivy.fr address.
+the user who makes the request at the team@ivy.community address.
 
 **Configuration – technical prerequisites**
 
@@ -303,7 +303,7 @@ the contract.
 **Complaints processing**
 
 Complaints can be addressed to the publisher using the following contact
-details: team@budivy.fr. The publisher will endeavour to deal with such
+details: team@ivy.community. The publisher will endeavour to deal with such
 complaints as soon as possible and to provide an appropriate response.
 
 **Dispute Resolution**

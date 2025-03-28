@@ -17,7 +17,7 @@ access, update and delete your information.
 
 Here is our Privacy Policy in its simplest form and accessible to all.
 If necessary, please do not hesitate to contact us regarding this
-Privacy Policy at: <team@budivy.fr>.
+Privacy Policy at: <team@ivy.community>.
 
 **Information Collected**
 

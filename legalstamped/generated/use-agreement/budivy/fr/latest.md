@@ -2,7 +2,7 @@
 
 **Applicable à compter du 24 janvier 2023**
 
-**Logiciel / application** : Ivy, l’appli qui donne vie à vos envies
+**Logiciel / application** : BudIvy, l’appli qui donne vie à vos envies
 
 **Auteur du logiciel** : Qalisa
 
@@ -47,7 +47,7 @@ conférés à l’utilisateur par le présent contrat.
 **Description et destination du logiciel – Caractéristiques essentielles
 du logiciel et fonctionnalités du contenu numérique**
 
-Le logiciel Ivy est une application de rencontre amicale. Son approche
+Le logiciel BudIvy est une application de rencontre amicale. Son approche
 est de remettre l’envie au cœur de la rencontre en vous permettant de
 découvrir et partager vos centres d’intérêt et envies avec d’autres
 membres de la communauté.
@@ -124,7 +124,7 @@ particulières auxquelles seront soumis la reproduction permanente ou
 provisoire du logiciel, ainsi que la traduction, l’adaptation,
 l’arrangement ou toute autre modification du logiciel. Ces modalités
 seront communiquées à l’utilisateur qui en formule la demande à
-l’adresse team@budivy.fr. 
+l’adresse team@ivy.community. 
 
 **Configuration – prérequis techniques**
 
@@ -320,7 +320,7 @@ la conclusion du contrat.
 **Traitement des réclamations**
 
 Les réclamations peuvent être adressées à l’éditeur en utilisant les
-coordonnées suivantes : team@budivy.fr. L’éditeur s’efforcera de traiter
+coordonnées suivantes : team@ivy.community. L’éditeur s’efforcera de traiter
 ces réclamations dans les meilleurs délais et d’y apporter une réponse
 appropriée.
 

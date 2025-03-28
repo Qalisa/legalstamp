@@ -6,7 +6,7 @@ Qalisa est une société consacrée au développement de solutions mobiles ayant
 
 L'une des valeurs promues par Qalisa étant la transparence, nous jugeons important que vous sachiez qu'en utilisant ces services, vous partagez certaines informations avec nous, mais également que vous sachiez quelles informations nous recueillons, comment nous les utilisons, et avec qui nous sommes susceptibles de les partager. De plus, vous aurez l'occasion d'être tenu au courant des contrôles que nous vous donnons pour accéder à vos informations, les mettre à jour et les supprimer.
 
-Voici donc notre Politique de confidentialité dans sa forme la plus simple et accessible possible à tous. En cas de besoin, n'hésitez surtout pas à entrer en contact avec nous concernant cette Politique de confidentialité à l'adresse : [team@budivy.fr](mailto:team@budivy.fr).
+Voici donc notre Politique de confidentialité dans sa forme la plus simple et accessible possible à tous. En cas de besoin, n'hésitez surtout pas à entrer en contact avec nous concernant cette Politique de confidentialité à l'adresse : [team@ivy.community](mailto:team@ivy.community).
 
 ## Informations collectées
 

@@ -4,7 +4,7 @@ Entrée en vigueur : 24 janvier 2023
 
 Qalisa est une société consacrée au développement de solutions mobiles
 ayant pour vision de mettre le numérique au service du réel. Nos
-produits et services - y compris Ivy et les publicités sont liés à cette
+produits et services - y compris BudIvy et les publicités sont liés à cette
 politique de confidentialité - offrent un moyen innovant de découvrir,
 partager et se rencontrer autour de vos envies !
 
@@ -19,7 +19,7 @@ pour accéder à vos informations, les mettre à jour et les supprimer.
 Voici donc notre Politique de confidentialité dans sa forme la plus
 simple et accessible possible à tous. En cas de besoin, n’hésitez
 surtout pas à entrer en contact avec nous concernant cette Politique de
-confidentialité à l’adresse : <team@budivy.fr>.
+confidentialité à l’adresse : <team@ivy.community>.
 
 **Informations collectées**
 
@@ -41,11 +41,11 @@ de votre compte, nous devons collecter quelques détails importants sur
 vous, tels que votre sexe, prénom, pseudo, mot de passe, numéro de
 téléphone et date de naissance.
 
-En cours d’utilisation d’Ivy, nous sommes également susceptibles de vous
+En cours d’utilisation d’BudIvy, nous sommes également susceptibles de vous
 demander de nous fournir des informations supplémentaires comme une
 photo de profil ou une adresse email de récupération. Votre photo de
 profil ne sera pas rendue publique mais sera visible en fin du process
-d’utilisation d’Ivy, ou bien avant, si vous en émettez le souhait.
+d’utilisation d’BudIvy, ou bien avant, si vous en émettez le souhait.
 D'autres services, tels que les achats intégrés, peuvent vous obliger à
 nous fournir un numéro de carte de débit ou de crédit et les
 informations de compte associées.
@@ -81,7 +81,7 @@ collectons lorsque vous utilisez nos services :
   exemple, nous pouvons collecter des informations sur :
 
   - La façon dont vous utilisez nos services, par exemple, les Buds que
-    vous gardez sur votre Ivy, ou encore les catégories que vous
+    vous gardez sur votre BudIvy, ou encore les catégories que vous
     préférez.
 
   - La manière dont vous interagissez avec d'autres Buddiz’, tels que
@@ -113,7 +113,7 @@ collectons lorsque vous utilisez nos services :
     votre numéro de téléphone mobile, votre prestataire de service,
     votre adresse IP et la puissance du signal.
 
-- **Répertoire téléphonique de l'appareil. ** Ivy étant conçu pour vous
+- **Répertoire téléphonique de l'appareil. ** BudIvy étant conçu pour vous
   mettre en relation avec de nouveaux contacts ou vous accompagner avec
   vos amis préexistants, communiquer avec d’autres Buddiz’, nous
   pouvons - avec votre consentement - recueillir des informations depuis
@@ -249,7 +249,7 @@ suivantes :
     nom et votre photo ;
 
   - Informations sur la façon par laquelle vous avez interagi avec nos
-    services, telles que votre « score » Ivy, votre top centres
+    services, telles que votre « score » BudIvy, votre top centres
     d’intérêt et les badges par lesquels vous avez été récompensés qui
     aideront les Buddiz’ à comprendre vos liens avec les autres
     utilisateurs de nos services. Par exemple, puisqu'une proposition
@@ -270,7 +270,7 @@ suivantes :
 
   - Des informations concernant vos centres d’intérêt principaux pour
     personnalisation des annonceurs que vous pourriez rencontrer sur
-    Ivy.
+    BudIvy.
 
 - **Avec des tiers.** Nous pouvons partager des informations vous
   concernant avec des fournisseurs de services qui optimisent votre
@@ -327,7 +327,7 @@ notamment ceux avec lesquels vous interagissez via nos Services.
 
 **Durée de conservation de vos données**
 
-Ivy vous permet de découvrir et de partager de nouveaux centres
+BudIvy vous permet de découvrir et de partager de nouveaux centres
 d’intérêt avec d’autres Buddiz’, et de les rencontrer. Ces rencontres
 menant dans le meilleur des cas, à de nouvelles amitié, cela signifie de
 notre côté, que la plupart des interactions que vous avez eues avec
@@ -347,7 +347,7 @@ Par exemple :
   scan, nous conserverons cet emplacement aussi longtemps que nous
   conserverons l’historique de la rencontre.
 
-Si vous décidez d'arrêter d'utiliser Ivy, il vous suffit de nous
+Si vous décidez d'arrêter d'utiliser BudIvy, il vous suffit de nous
 demander de supprimer votre compte. Nous supprimons également la plupart
 des informations que nous avons recueillies à votre sujet après que vous
 ayez été inactif ou inactive pendant deux ans.
