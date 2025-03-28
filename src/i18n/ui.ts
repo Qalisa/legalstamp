@@ -2,6 +2,7 @@
 export const ui = {
     en: {
         'documentType': {
+            'children-security-norms': "Norms Related to the Security of Children",
             'general-conditions-sales': "General Conditions of Sales",
             'privacy-policy': "Privacy Policy",
             'use-agreement': "License"
@@ -28,9 +29,10 @@ export const ui = {
     },
     fr: {
         'documentType': {
+            'children-security-norms': "Normes Liées à la Sécurité des Enfants",
             'general-conditions-sales': "Conditions Générales de Vente",
             'privacy-policy': "Politique de Confidentialité",
-            'use-agreement': "Contrat de License",
+            'use-agreement': "Contrat de License"
         },
         'lang': {
             'en': 'Anglais',
