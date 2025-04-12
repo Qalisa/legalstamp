@@ -4,8 +4,9 @@ export const ui = {
         'documentType': {
             'children-security-norms': "Norms Related to the Security of Children",
             'general-conditions-sales': "General Conditions of Sales",
+            'legal-notice': "Legal Notice",
             'privacy-policy': "Privacy Policy",
-            'use-agreement': "License"
+            'use-agreement': "License",
         },
         'lang': {
             'en': 'English',
@@ -31,8 +32,9 @@ export const ui = {
         'documentType': {
             'children-security-norms': "Normes Liées à la Sécurité des Enfants",
             'general-conditions-sales': "Conditions Générales de Vente",
+            'legal-notice': "Mentions Légales",
             'privacy-policy': "Politique de Confidentialité",
-            'use-agreement': "Contrat de License"
+            'use-agreement': "Contrat de License",
         },
         'lang': {
             'en': 'Anglais',
