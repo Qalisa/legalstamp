@@ -1,13 +1,9 @@
 import type { APIRoute } from 'astro';
 import { getEntry } from "astro:content";
 import { availableFormatsConfig } from "config";
-import { domainsWhitelist } from 'config/corsWhitelist';
 
 export const prerender = false
 
-type Log = {[key: string]: unknown}
-const logCORS = (log: Log, msg: string) => console.log("CORS =>", log, "=>", msg)
- 
 //
 //
 //
@@ -16,75 +12,26 @@ const HEADER_AUTHORIZATION = 'Authorization' as const
 const BYPASS_KEYWORD = 'bypass' as const
 
 //
-//
-//
+const shouldHandleAuthBypassAttempts = import.meta.env.DEV
 
-export const injectBypassShortcutTo = (path: string) => `${path}?${BYPASS_KEYWORD}`
-const shouldHandleCORSBypassAttempts = import.meta.env.DEV
-const doBypassCORSProtection = (url: URL, _: Log) => {
-    //
-    const urlBypass = url.searchParams.get(BYPASS_KEYWORD) != null
-    
-    //
-    _.bypass = {
-        handled: shouldHandleCORSBypassAttempts,
-        urlBypass
-    }
-
-    //
-    return shouldHandleCORSBypassAttempts && urlBypass
-}
-
-
-//
-//
-//
-
-const allowAuthorizationOnToken = (() => {
-    const { CORS_AUTH_BEARER_TOKEN } = import.meta.env
-    return CORS_AUTH_BEARER_TOKEN == '' || CORS_AUTH_BEARER_TOKEN == null 
-        ? null
-        : CORS_AUTH_BEARER_TOKEN
+/** return bearer token if valid; else, null */
+const isAuthTokenValid = (() => {
+    const { AUTH_BEARER_TOKEN } = import.meta.env
+    return typeof AUTH_BEARER_TOKEN === "string" && AUTH_BEARER_TOKEN != "" ? AUTH_BEARER_TOKEN : null
 })()
 
 //
-const getOrigin = (headers: Headers, _?: Log) => {
-    //
-    const [pickedOrigin, reason] = _getOrigin(headers);
+//
+//
 
-    //
-    if (_)
-        _.origin = {
-            pickedOrigin,
-            reason,
-        }
+//
+export const injectBypassShortcutTo = (path: string) => `${path}?${BYPASS_KEYWORD}`
 
-    //
-    return pickedOrigin; 
-}
 
-// we'll also be using "Host" so that server-to-server, which often do not add "Origin" header can still be secured by CORS
-// assume HTTPS
-// TODO: detect SSL to set scheme ?
-// TODO: make it safer ?
-const _getOrigin = (headers: Headers) => {
-    //
-    const origin = headers.get('Origin')
-    const referer = headers.get('Referer')
-    const host = headers.get('Host')
-
-    //
-    if (origin) {
-        return [origin, "OK, using Origin"] as const
-    }
-
-    //
-    if (host && referer == null) {
-        return ["https://" + host, "OK, using Host (because no Referer)"] as const
-    }
-
-    //
-    return [null, "NOK, No Origin, or Referer defined"] as const
+//
+const shouldBypassAuth = (url: URL) => {
+    const urlIncludesBypassKeyword = () => url.searchParams.get(BYPASS_KEYWORD) != null
+    return isAuthTokenValid && shouldHandleAuthBypassAttempts && urlIncludesBypassKeyword()
 }
 
 
@@ -92,6 +39,10 @@ const _getOrigin = (headers: Headers) => {
 //
 //
 
+
+//
+//
+//
 
 //
 export const getMarkdownPage = () => {
@@ -100,8 +51,8 @@ export const getMarkdownPage = () => {
 
     //
     return [
-        `Markdown ${shouldHandleCORSBypassAttempts ? '' : ' (CORS) '}#️⃣`, 
-        shouldHandleCORSBypassAttempts ? injectBypassShortcutTo(pathTo) : pathTo
+        `Markdown ${shouldHandleAuthBypassAttempts ? '' : ' (Restricted) '}#️⃣`, 
+        shouldHandleAuthBypassAttempts ? injectBypassShortcutTo(pathTo) : pathTo
     ] as const
 }
 
@@ -110,7 +61,7 @@ export const getMarkdownPage = () => {
 //
 
 //
-const getDocument = async (params: Record<string, string | undefined>) => {
+const _getDocument = async (params: Parameters<APIRoute>["0"]["params"]) => {
     //
     const { documentType, lang, productOrOrganization, tag } = params;
     const slug = [documentType, productOrOrganization, lang, tag].join('/')
@@ -123,154 +74,51 @@ const getDocument = async (params: Record<string, string | undefined>) => {
         throw new Error('Document exist, but is empty');
     }
     
-    return entry.body
+    //
+    return entry.body;
 }
 
-// no whitelist ? all allowed
-const _originAllowed = domainsWhitelist == null 
-    ? () => [true, "OK, no whitelist"]
-    : (origin: string | null) => {
-        // no "Origin" ? not allowed
-        if (origin == null || origin == '') return [false, "NOK, origin empty"] as const
-
-        // does "Origin" respect exact match of any singles whitelisted ?
-        if(domainsWhitelist!.allowedSingles.includes(origin)) return [true, "OK, origin in singles whitelist"] as const
-        
-        //
-        let originUrl = null
-        try {
-            originUrl = new URL(origin)
-        } catch {
-            return [false, "NOK, origin '" + origin + "' is no URL"] as const
-        }
-
-        // does the "Origin" hostname part (eg, without scheme and port) ends with any allowed catchall ?
-        const inCatchallWhitelist = domainsWhitelist!.allowedCatchalls.some(domain => 
-            originUrl.hostname.endsWith(domain)
-        )
-        return [inCatchallWhitelist, inCatchallWhitelist ? "OK, origin in catchall whitelist" : "NOK, origin not in whitelist (singles / catchall)"] as const
-    }
+//
+const getDocument = async (...params: Parameters<typeof _getDocument>) => {
+    const doc = await _getDocument(...params)
+    return new Response(doc, { 
+        headers: {
+            "Content-Type": availableFormatsConfig['markdown'].contentType
+        },
+    })  
+}
 
 //
-const originAllowed = (origin: string | null, _?: Log) => {
-    const [allowed, log] = _originAllowed(origin)
+const forbidden = () => new Response(undefined, { status: 403 })
+
+//
+//
+//
+
+//
+const _getBearerToken = (headers: Headers): string | null => {
+    const authHeader = headers.get(HEADER_AUTHORIZATION)
+    if (!authHeader) return null
     
-    //
-    if (_)
-        _.originAllow = {
-            allowed,
-            log
-        }
-
-    //
-    return allowed
-}
-
-//
-const forbidden = () => {
-    //
-    const message = "Requester not whitelisted. Should be either " + 
-            (domainsWhitelist 
-                ? [...domainsWhitelist.allowedSingles, ...domainsWhitelist.allowedCatchalls] 
-                : []
-            ).join(',')
-
-    //
-    return new Response(message, { status: 403 })
-}
-const corsRestricted = () => new Response("Please use CORS to access this ressource.", { status: 403 })
-
-//
-const basicHeaders = ({ whitelistedOrigin } : { whitelistedOrigin?: string }) : HeadersInit => ({
-    ...whitelistedOrigin != null ? {
-        "Access-Control-Allow-Headers": [
-            ...allowAuthorizationOnToken ? [HEADER_AUTHORIZATION]: []
-        ].join(', '),
-        "Access-Control-Allow-Methods": "GET, OPTIONS",
-        "Access-Control-Allow-Origin": whitelistedOrigin ?? '*',
-    } : {},
-    "Content-Type": availableFormatsConfig['markdown'].contentType,
-})
-
-//
-//
-//
-
-//
-export const GET: APIRoute = async ({ params, request: { headers }, url }) => {
-    const log: Log = {}
+    const [method, token] = authHeader.split(' ')
+    if (method !== 'Bearer') return null
     
-    //
-    const origin = getOrigin(headers, log) ?? ''
-    const isCORSRequest = origin != ""
-    const bypassCORS = doBypassCORSProtection(url, log)
+    return token
+}
 
-    //
-    if (!bypassCORS && !isCORSRequest) {
-        logCORS(log, "CORS restricted")
-        return corsRestricted()
-    }
-
-    //
-    const [authorized, authLog ] = (() => {
-        //
-        if (bypassCORS) return [true, "OK, bypass"] as const
-        if (allowAuthorizationOnToken == null) return [false, "NOK, no token configured on server"] as const
-
-        //
-        const rawAuth = headers.get(HEADER_AUTHORIZATION)
-        if (!rawAuth) return [false, "NOK, No Authorization header in req"] as const
-
-        //
-        const [method, token] = rawAuth?.split(' ')
-        if (method != "Bearer") return [false, "NOK, No Bearer auth method on req"] as const // Requires Bearer auth
-
-        //
-        const match = allowAuthorizationOnToken == token
-        return [match, match ? "OK, Token match" : "NOK, Token Missmatch"] as const
-    })()
-
-    //
-    log.authCheck = {
-        authLog,
-        authorized
-    }
-
-    //
-    return !authorized && !originAllowed(origin, log)
-        ? (() => {
-            //
-            logCORS(log, "Forbidden")
-
-            //
-            return forbidden()
-        })()
-        : (async () => {
-            //
-            logCORS(log, "OK")
-
-            //
-            const doc = await getDocument(params)
-
-            //
-            return new Response(doc, { 
-                headers: basicHeaders({ whitelistedOrigin: isCORSRequest ? origin : undefined})
-            })  
-        })()
-    
+const checkBearerToken = (headers: Headers) => {
+    if (!isAuthTokenValid) return false;
+    return _getBearerToken(headers) === isAuthTokenValid;
 }
 
 //
-export const OPTIONS: APIRoute = async ({ request: { headers } }) => {
-    const origin = getOrigin(headers) ?? '';
+//
+//
 
-    //
-    if (originAllowed(origin)) {
-        return new Response(null, {
-            headers: basicHeaders({ whitelistedOrigin: origin }),
-        });
+//
+export const GET: APIRoute = async ({ params, request: { headers }, url }) => {  
+    if (shouldBypassAuth(url) || checkBearerToken(headers)) {
+        return getDocument(params);
     }
-
-    //
     return forbidden();
 }

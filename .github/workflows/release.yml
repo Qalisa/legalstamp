@@ -30,10 +30,8 @@ jobs:
       id: data-from-helm
       run: |
         APP_VERSION=$(yq e '.appVersion' .helm/Chart.yaml)
-        CORS_ALLOW_ORIGIN=$(yq -r '.cors.allowOriginFrom | join(",")' .helm-values/values.${{ github.ref_name }}.yaml)
         CANONICAL_URL=$(yq -r '.ingress.hosts[0]' .helm-values/values.${{ github.ref_name }}.yaml)
         echo "appVersion=${APP_VERSION}" >> $GITHUB_OUTPUT
-        echo "allowedCors=${CORS_ALLOW_ORIGIN}" >> $GITHUB_OUTPUT
         echo "canonicalUrl=${CANONICAL_URL}" >> $GITHUB_OUTPUT
         
     #
@@ -66,7 +64,6 @@ jobs:
         target: lean
         build-args: |
           K8S_APP__VERSION=${{ steps.data-from-helm.outputs.appVersion }}
-          CORS_ALLOW_ORIGIN=${{ steps.data-from-helm.outputs.allowedCors }}
           CANONICAL_URL=${{ steps.data-from-helm.outputs.canonicalUrl }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}

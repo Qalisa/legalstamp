@@ -5,7 +5,6 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import { defaultDocFormatConfig } from './src/config';
-import { domainsWhitelist } from './src/config/corsWhitelist';
 
 //
 const site = (() => {
@@ -36,15 +35,7 @@ export default defineConfig({
         const { pathname } = new URL(page);
         return !pathname.startsWith('/get') && !pathname.endsWith(defaultDocFormatConfig.name + '/')
       }
-    }),
-    {
-      hooks: {
-        "astro:server:start": ({ logger }) => {
-          logger.info("Whitelisted CORS: " + JSON.stringify(domainsWhitelist))
-        }
-      },
-      name: "more-logs"
-    }
+    })
   ],
 
   

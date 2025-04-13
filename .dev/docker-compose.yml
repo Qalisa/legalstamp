@@ -5,8 +5,8 @@ services:
       context: ..
       args:
         K8S_APP__VERSION: "0.dev-compose"
-        CORS_ALLOW_ORIGIN: "*"
         CANONICAL_URL: http://localhost
+        AUTH_BEARER_TOKEN: testtest
       dockerfile: Dockerfile
       tags:
         - latest
