@@ -16,8 +16,8 @@ const shouldHandleAuthBypassAttempts = import.meta.env.DEV
 
 /** return bearer token if valid; else, null */
 const isAuthTokenValid = (() => {
-    const { AUTH_BEARER_TOKEN } = import.meta.env
-    return typeof AUTH_BEARER_TOKEN === "string" && AUTH_BEARER_TOKEN != "" ? AUTH_BEARER_TOKEN : null
+    const { LEGALSTAMP_AUTH_TOKEN } = import.meta.env
+    return typeof LEGALSTAMP_AUTH_TOKEN === "string" && LEGALSTAMP_AUTH_TOKEN != "" ? LEGALSTAMP_AUTH_TOKEN : null
 })()
 
 //

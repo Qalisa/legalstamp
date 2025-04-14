@@ -24,7 +24,7 @@ COPY --from=build /app/dist ./dist
 
 
 # to access markdown files
-# ENV AUTH_BEARER_TOKEN=
+# ENV LEGALSTAMP_AUTH_TOKEN=
 ENV HOST=0.0.0.0 \
     PORT=80
 

@@ -7,7 +7,7 @@
       "request": "launch",
       "type": "node-terminal",
       "env": {
-        "AUTH_BEARER_TOKEN": "testtest"
+        "LEGALSTAMP_AUTH_TOKEN": "testtest"
       },
       "serverReadyAction": {
         "action": "debugWithChrome",
