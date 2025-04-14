@@ -2,6 +2,9 @@ name: Release
 
 on:
   push:
+    branches:
+      - dev
+      - main
     paths:
       - .helm/Chart.yaml # on maybe new app version
       - .github/workflows/release.yml
