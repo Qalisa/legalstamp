@@ -1,4 +1,5 @@
 {
+    "terminal.integrated.cwd": "${workspaceFolder}/app",
     "editor.codeActionsOnSave": {
         "source.fixAll": "always"
     }

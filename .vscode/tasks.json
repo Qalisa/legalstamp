@@ -1,10 +1,85 @@
 {
-    "version": "2.0.0",
-    "tasks": [{
-        "label": "☀️ Generate icons from favicon.svg",
-        "command": "npx",
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "description": ".helm-values/values.<Branch>.yaml",
+      "type": "promptString",
+      "default": "main",
+      "id": "branch"
+    },
+    {
+      "description": "CAREFUL - Branch name to override",
+      "type": "promptString",
+      "default": "",
+      "id": "branch-to-override"
+    },
+    {
+      "description": "CAREFUL - Branch name to copy from",
+      "type": "promptString",
+      "default": "",
+      "id": "branch-to-copy"
+    },
+    {
+      "id": "confirmation",
+      "type": "promptString",
+      "description": "CAREFUL !!!! You will override a branch on the remote, this is irreversible. Type 'agree' to continue",
+      "default": ""
+    }
+  ],
+  "tasks": [
+    {
+      "label": "☀️ Generate icons from favicon.svg",
+      "command": "npx",
+      "type": "shell",
+      "args": ["icon-gen", "-i", "public/favicon.svg", "-o", "public"],
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      }
+    },
+    //
+    //
+    //
+    {
+        "label": "🧶 Lint",
         "type": "shell",
-        "args": ["icon-gen", "-i", "public/favicon.svg", "-o", "public"],
-        "problemMatcher": []
-    }]
+        "command": "pnpm",
+        "args": ["lint"],
+        "options": {
+          "cwd": "${workspaceFolder}/app"
+        }
+      },
+    {
+      "label": "Sort package.json",
+      "type": "shell",
+      "command": "npx",
+      "args": ["sort-package-json"],
+      "problemMatcher": "$tsc",
+      "options": {
+        "cwd": "${workspaceFolder}/app",
+        "statusbar": { "hide": true }
+      }
+    },
+    {
+      "label": "🪖 Test helm chart",
+      "command": "helm",
+      "args": [
+        "template",
+        ".helm",
+        "-f",
+        ".helm-values/values.${input:branch}.yaml",
+        "--debug"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "⚠️ Override branch with another",
+      "type": "shell",
+      "command": "if [ \"${input:confirmation}\" = \"agree\" ]; then git checkout ${input:branch-to-override} && git reset --hard ${input:branch-to-copy} && git push --force; else echo 'Did not agree explicitely'; exit 0; fi",
+      "problemMatcher": [],
+      "options": {
+        "statusbar": { "hide": true }
+      }
+    }
+  ]
 }

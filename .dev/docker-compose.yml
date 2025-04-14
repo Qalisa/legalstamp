@@ -7,7 +7,6 @@ services:
         K8S_APP__VERSION: "0.dev-compose"
         CANONICAL_URL: http://localhost
         LEGALSTAMP_AUTH_TOKEN: testtest
-      dockerfile: Dockerfile
       tags:
         - latest
     ports:

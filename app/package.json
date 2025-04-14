@@ -4,13 +4,14 @@
   "description": "legalstamp is an app to generate and deliver legal documents",
   "type": "module",
   "scripts": {
-    "check-types": "tsc --noemit",
-    "eslint": "eslint",
-    "lint": "pnpm eslint && pnpm check-types",
     "astro": "astro",
     "build": "astro build",
+    "check-types": "tsc --noemit",
     "dev": "astro dev",
-    "preview": "astro preview"
+    "eslint": "eslint",
+    "lint": "pnpm eslint && pnpm check-types",
+    "preview": "astro preview",
+    "sort": "sort-package-json"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.1.0",
@@ -28,7 +29,7 @@
     "eslint-plugin-sort": "^4.0.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "icon-gen": "^5.0.0",
-    "sort-package-json": "^2.15.0",
+    "sort-package-json": "^3.0.0",
     "typescript": "5.7.3",
     "typescript-eslint": "^8.25.0"
   },

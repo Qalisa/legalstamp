@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "./node_modules/.bin/astro dev",
+      "command": "pnpm dev",
       "name": "Development server",
       "request": "launch",
       "type": "node-terminal",
@@ -15,14 +15,15 @@
         "uriFormat": "http://localhost:4321",
         "webRoot": "${workspaceFolder}",
         "killOnServerStop": true
-      }
+      },
+      "cwd": "${workspaceFolder}/app"
     },
     {
       "name": "Debug: Docker Compose",
       "type": "node-terminal",
       "request": "launch",
       "command": "docker compose up --build",
-      "cwd": "${workspaceFolder}/dev",
+      "cwd": "${workspaceFolder}/.dev",
       "serverReadyAction": {
           "action": "debugWithChrome",
           "uriFormat": "http://localhost:4321",
