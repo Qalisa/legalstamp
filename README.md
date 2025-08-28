@@ -14,10 +14,12 @@ From templates, serve on the web your legal documents by type, lang, date or ass
 <div align="center">
   <img width="480" height="619" src="https://github.com/user-attachments/assets/90cf2e94-a9d4-432e-b347-fc306202aa49" />
 </div>
+
 ### Available versions by date
 <div align="center">
   <img width="368" height="219" src="https://github.com/user-attachments/assets/cdbf5e44-0d17-4134-bec5-473d623d1db8" />
 </div>
+
 ### Access document in Markdown or HTML
 <div align="center">
   <img width="471" height="817" src="https://github.com/user-attachments/assets/178b8d2e-e108-44e4-bcfc-325ad550df80" />
