@@ -1,5 +1,5 @@
 ### Build stage
-FROM node:alpine AS base
+FROM node:22-alpine AS base
 ARG K8S_APP__VERSION="unknown"
 ARG CANONICAL_URL="http://define-me.pls"
 
