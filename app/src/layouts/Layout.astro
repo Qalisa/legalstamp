@@ -4,6 +4,7 @@ import ArianeLink from "components/ArianeLink.astro";
 import HrefFixer from "components/HrefFixer.astro";
 import MetaSocialPreview from "components/MetaSocialPreview.astro";
 import ThemeIcon from 'components/ThemeIcon.astro';
+import config from "../../legalstamp.config.json";
 
 const title = "LegalStamp"
 const descr = "LegalStamp"
@@ -35,7 +36,7 @@ const appVersion = import.meta.env.K8S_APP__VERSION ?? "[unknown]"
 	</body>
 	<div id="spacer"/>
 	<footer>
-		{title} - v{appVersion} - Qalisa
+		{title} - v{appVersion} - {config.owner}
 		{/*<LanguagePicker />*/}
 	</footer>
 </html>

@@ -1,3 +1,5 @@
+import config from '../../legalstamp.config.json';
+
 //
 export const ui = {
     en: {
@@ -19,11 +21,8 @@ export const ui = {
             "p": "💼 By Product or Organization",
             "tag": "🆔 Available Documents"
         },
-        'productOrOrganization': {
-            budivy: "BudIvy (Ivy C2C)",
-            'ivy-community': "Ivy (Ivy B2B)",
-            qalisa: "Qalisa"
-        },
+        // labels of your products / organizations: legalstamp.config.json
+        'productOrOrganization': config.productOrOrganization,
         'tag': {
             'latest': "Latest"
         }

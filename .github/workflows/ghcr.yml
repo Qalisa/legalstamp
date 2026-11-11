@@ -1,7 +1,7 @@
 name: Publish to GHCR
 
-# Public image consumed by bud.qalisa.fr (podman auto-update follows :main).
-# Build args mirror Qalisa/IaC nix/modules/apps.nix.
+# Publishes the `builder` image, from which sites with their own documents are built
+# (e.g. Qalisa/legalstamp-qalisa). See README, "Serve your own documents".
 on:
   push:
     branches: [main]
@@ -29,14 +29,11 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: .
-          target: lean
+          target: builder
           push: true
-          build-args: |
-            K8S_APP__VERSION=1.0.0
-            CANONICAL_URL=https://legal.qalisa.fr
           tags: |
-            ghcr.io/qalisa/legalstamp:main
-            ghcr.io/qalisa/legalstamp:${{ github.sha }}
+            ghcr.io/qalisa/legalstamp:builder-main
+            ghcr.io/qalisa/legalstamp:builder-${{ github.sha }}
           labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

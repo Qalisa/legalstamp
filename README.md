@@ -2,11 +2,7 @@
 From templates, serve on the web your legal documents by type, lang, date or associated product. CORS-protected, use and share your documents within your own apps.
 
 > [!NOTE]
-> We host our own Legalstamp instance at Qalisa !
-> 
-> https://legal.qalisa.fr
->
-> [![ArgoCD Badge](https://argocd.qalisa.fr/api/badge?name=legalstamp-main&revision=true&showAppName=true)](https://argocd.qalisa.fr/applications/argocd/legalstamp-main)
+> We host our own Legalstamp instance at Qalisa: https://legal.qalisa.fr
 
 
 ## Preview
@@ -24,3 +20,34 @@ From templates, serve on the web your legal documents by type, lang, date or ass
 <div align="center">
   <img width="471" height="817" src="https://github.com/user-attachments/assets/178b8d2e-e108-44e4-bcfc-325ad550df80" />
 </div>
+
+
+## Serve your own documents
+
+This repository holds the tool and sample documents only. Documents are collected at build time, so your site is built from the published `builder` image:
+
+```
+your-repo/
+  legalstamped/generated/{documentType}/{productOrOrganization}/{lang}/{"latest"|YYYYMMDD}.md
+  legalstamp.config.json   # { "owner": "Your Org", "productOrOrganization": { "your-product": "Your Product" } }
+  Dockerfile
+```
+
+```dockerfile
+FROM ghcr.io/qalisa/legalstamp:builder-<sha> AS build
+ARG CANONICAL_URL K8S_APP__VERSION
+ENV CANONICAL_URL=$CANONICAL_URL K8S_APP__VERSION=$K8S_APP__VERSION
+RUN rm -rf legalstamped/generated
+COPY legalstamped/generated ./legalstamped/generated
+COPY legalstamp.config.json ./
+RUN pnpm run build
+
+FROM node:22-alpine
+WORKDIR /app
+COPY --from=build /app/dist ./dist
+ENV HOST=0.0.0.0 PORT=80
+EXPOSE 80
+CMD ["node", "./dist/server/entry.mjs"]
+```
+
+`builder-main` follows this repository's `main`; pin a `builder-<sha>` tag for reproducible builds.
