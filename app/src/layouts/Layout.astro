@@ -5,12 +5,12 @@ import HrefFixer from "components/HrefFixer.astro";
 import MetaSocialPreview from "components/MetaSocialPreview.astro";
 import ThemeIcon from 'components/ThemeIcon.astro';
 import config from "../../legalstamp.config.json";
+import { version as appVersion } from "../../package.json";
 
 const title = "LegalStamp"
 const descr = "LegalStamp"
 const titlePlus = "⚖️ " + title
 
-const appVersion = import.meta.env.K8S_APP__VERSION ?? "[unknown]"
 ---
 <!doctype html>
 <html lang={Astro.currentLocale}>

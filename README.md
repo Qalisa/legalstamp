@@ -35,8 +35,8 @@ your-repo/
 
 ```dockerfile
 FROM ghcr.io/qalisa/legalstamp:builder-<sha> AS build
-ARG CANONICAL_URL K8S_APP__VERSION
-ENV CANONICAL_URL=$CANONICAL_URL K8S_APP__VERSION=$K8S_APP__VERSION
+ARG CANONICAL_URL
+ENV CANONICAL_URL=$CANONICAL_URL
 RUN rm -rf legalstamped/generated
 COPY legalstamped/generated ./legalstamped/generated
 COPY legalstamp.config.json ./

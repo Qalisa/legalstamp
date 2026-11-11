@@ -12,9 +12,8 @@ RUN pnpm install --frozen-lockfile
 ### Build (here with the sample documents)
 # Build-time settings are set per site, not baked into the published builder image.
 FROM builder AS build
-ARG K8S_APP__VERSION="unknown"
 ARG CANONICAL_URL="http://define-me.pls"
-ENV K8S_APP__VERSION=$K8S_APP__VERSION CANONICAL_URL=$CANONICAL_URL
+ENV CANONICAL_URL=$CANONICAL_URL
 RUN pnpm run build
 
 ### Lean: runtime only
